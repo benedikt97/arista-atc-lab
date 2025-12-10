@@ -1,0 +1,4 @@
+hostname: "tower-df1" 
+ipaddress: "192.168.250.240/24"
+gateway: "192.168.250.1"
+

@@ -1,0 +1,2 @@
+#!/bin/bash
+clab destroy && bash gen.sh && clab deploy

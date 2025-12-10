@@ -1,0 +1,16 @@
+#!/bin/bash
+ip addr add {{ ipaddress }} dev eth1
+ip route add 192.168.0.0/16 via {{ gateway }}
+
+
+{% if hostname == "tower-df1" %}
+socat_loop () {
+    while true; do
+    echo "This is a radar message" | \
+    socat - UDP4-DATAGRAM:255.255.255.255:5000,bind={{ ipaddress.split('/')[0] }},broadcast
+    sleep 1
+    done
+}
+
+socat_loop &
+{% endif %}

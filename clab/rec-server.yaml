@@ -1,0 +1,7 @@
+hostname: "rec-server" 
+ipaddress: "192.168.12.7/24"
+gateway: "192.168.219.1"
+vlans:
+  - id: 219
+    ipaddress: 192.168.219.5/24
+

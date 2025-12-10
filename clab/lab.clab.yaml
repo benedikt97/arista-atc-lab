@@ -1,0 +1,173 @@
+---
+name: interview-lab
+prefix: ""
+topology:
+  kinds:
+    ceos:
+      image: ceos:4.35.0F
+      startup-config: ../intended/configs/__clabNodeName__.cfg
+      env:
+        CLAB_MGMT_VRF: MGMT
+
+  nodes:
+    rz-spine1:
+      kind: ceos
+      mgmt-ipv4: 172.22.0.101
+    rz-spine2:
+      kind: ceos
+      mgmt-ipv4: 172.22.0.102
+    rz-sdf-leaf1-1:
+      kind: ceos
+      mgmt-ipv4: 172.22.0.103
+    rz-sdf-leaf1-2:
+      kind: ceos
+      mgmt-ipv4: 172.22.0.104
+    center-leaf2-1:
+      kind: ceos
+      mgmt-ipv4: 172.22.0.105
+    center-leaf2-2:
+      kind: ceos
+      mgmt-ipv4: 172.22.0.106
+    tower-leaf3-1:
+      kind: ceos
+      mgmt-ipv4: 172.22.0.107
+    tower-leaf3-2:
+      kind: ceos
+      mgmt-ipv4: 172.22.0.108
+    radarstation-edge1-1:
+      kind: ceos
+      mgmt-ipv4: 172.22.0.109
+    radarstation-edge1-2:
+      kind: ceos
+      mgmt-ipv4: 172.22.0.110
+    router1:
+      kind: linux
+      image: frrouting/frr:latest
+      exec:
+        - bash server.sh
+      binds:
+        - startscripts/router1.sh:/server.sh
+        - startscripts/router1.cmd:/router.cmd
+    router2:
+      kind: linux
+      image: frrouting/frr:latest
+      exec:
+        - bash server.sh
+      binds:
+        - startscripts/router2.sh:/server.sh
+        - startscripts/router2.cmd:/router.cmd
+    sdf-server1:
+      kind: linux
+      image: clab-host:latest
+      exec:
+        - bash server.sh
+      binds:
+        - startscripts/sdf-server1.sh:/server.sh
+    sdf-server2:
+      kind: linux
+      image: clab-host:latest
+      exec:
+        - bash server.sh
+      binds:
+        - startscripts/sdf-server2.sh:/server.sh
+    rec-server:
+      kind: linux
+      image: clab-host:latest
+      exec:
+        - bash server.sh
+      binds:
+        - startscripts/rec-server.sh:/server.sh
+    radar:
+      kind: linux
+      image: clab-host:latest
+      exec:
+        - bash server.sh
+      binds:
+        - startscripts/radar.sh:/server.sh
+    center-position1:
+      kind: linux
+      image: clab-host:latest
+      exec:
+        - bash server.sh
+      binds:
+        - startscripts/center-position1.sh:/server.sh
+    tower-position1:
+      kind: linux
+      image: clab-host:latest
+      exec:
+        - bash server.sh
+      binds:
+        - startscripts/tower-position1.sh:/server.sh
+    tower-cam1:
+      kind: linux
+      image: clab-host:latest
+      exec:
+        - bash server.sh
+      binds:
+        - startscripts/tower-cam1.sh:/server.sh
+    tower-df1:
+      kind: linux
+      image: clab-host:latest
+      exec:
+        - bash server.sh
+      binds:
+        - startscripts/tower-df1.sh:/server.sh
+    radar-cam1:
+      kind: linux
+      image: clab-host:latest
+      exec:
+        - bash server.sh
+      binds:
+        - startscripts/radar-cam1.sh:/server.sh
+  links:
+    - endpoints: ["rz-spine1:eth1", "rz-sdf-leaf1-1:eth1"]
+    - endpoints: ["rz-spine1:eth2", "rz-sdf-leaf1-2:eth1"]
+    - endpoints: ["rz-spine1:eth3", "center-leaf2-1:eth1"]
+    - endpoints: ["rz-spine1:eth4", "center-leaf2-2:eth1"]
+
+
+
+    - endpoints: ["rz-spine2:eth1", "rz-sdf-leaf1-1:eth2"]
+    - endpoints: ["rz-spine2:eth2", "rz-sdf-leaf1-2:eth2"]
+    - endpoints: ["rz-spine2:eth3", "center-leaf2-1:eth2"]
+    - endpoints: ["rz-spine2:eth4", "center-leaf2-2:eth2"]
+
+    - endpoints: ["center-leaf2-1:eth8", "tower-leaf3-1:eth1"]
+
+    - endpoints: ["tower-leaf3-1:eth3", "tower-leaf3-2:eth3"]
+    - endpoints: ["tower-leaf3-1:eth4", "tower-leaf3-2:eth4"]
+    - endpoints: ["rz-sdf-leaf1-1:eth3", "rz-sdf-leaf1-2:eth3"]
+    - endpoints: ["rz-sdf-leaf1-1:eth4", "rz-sdf-leaf1-2:eth4"]
+
+    - endpoints: ["rz-sdf-leaf1-1:eth8", "router1:eth2"]
+    - endpoints: ["rz-sdf-leaf1-2:eth8", "router1:eth3"]
+    - endpoints: ["router1:eth1", "router2:eth1"]
+    - endpoints: ["router2:eth2", "radarstation-edge1-1:eth1"]
+    - endpoints: ["router2:eth3", "radarstation-edge1-2:eth1"]
+
+    - endpoints: ["sdf-server1:eth1", "rz-sdf-leaf1-1:eth5"]
+    - endpoints: ["sdf-server1:eth2", "rz-sdf-leaf1-2:eth5"]
+    - endpoints: ["sdf-server2:eth1", "rz-sdf-leaf1-1:eth6"]
+    - endpoints: ["sdf-server2:eth2", "rz-sdf-leaf1-2:eth6"]
+    - endpoints: ["rec-server:eth1", "rz-sdf-leaf1-1:eth7"]
+    - endpoints: ["rec-server:eth2", "rz-sdf-leaf1-2:eth7"]
+
+    - endpoints: ["center-position1:eth1", "center-leaf2-1:eth3"]
+    - endpoints: ["center-position1:eth2", "center-leaf2-2:eth3"]
+    - endpoints: ["tower-position1:eth1", "tower-leaf3-1:eth5"]
+    - endpoints: ["tower-position1:eth2", "tower-leaf3-2:eth5"]
+    - endpoints: ["tower-cam1:eth1", "tower-leaf3-2:eth6"]
+    - endpoints: ["tower-df1:eth1", "tower-leaf3-1:eth6"]
+    - endpoints: ["radar-cam1:eth1", "radarstation-edge1-1:eth5"]
+    - endpoints: ["radar:eth1", "radarstation-edge1-1:eth6"]
+    - endpoints: ["radar:eth2", "radarstation-edge1-2:eth6"]
+    - endpoints: ["radarstation-edge1-1:eth3", "radarstation-edge1-2:eth3"]
+    - endpoints: ["radarstation-edge1-1:eth4", "radarstation-edge1-2:eth4"]
+
+
+
+
+mgmt:
+  bridge: br-clab
+  ipv4-subnet: 172.22.0.0/24
+  ipv4-gw: 172.22.0.1

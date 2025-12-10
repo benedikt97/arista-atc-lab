@@ -1,0 +1,20 @@
+# custom_structured_configuration:
+#   ethernet_interfaces:
+#     Ethernet_interface_5:
+#       description: DCI-OSPF-LINK
+#       shutdown: false
+#       type: routed
+#       vrf: default
+#       ipv6_enable: true
+#       ipv6_address: 2001:db8:f1:1::1/64
+#       ospf_network_point_to_point: true
+#       ospf_area: 0.0.0.0
+#       ospf_authentication: none
+#   router_ospf:
+#     process_ids:
+#       100:
+#         vrf: VRF-DCI
+#         passive_interface_default: false
+#         router_id: 11.22.11.11
+#         default_information_originate:
+#           always: true

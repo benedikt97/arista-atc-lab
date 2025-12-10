@@ -1,0 +1,4 @@
+hostname: "radar" 
+ipaddress: "192.168.221.5/24"
+gateway: "192.168.221.1"
+

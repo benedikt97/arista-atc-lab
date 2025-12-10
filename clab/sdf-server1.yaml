@@ -1,0 +1,10 @@
+hostname: "sdf-server1" 
+ipaddress: "192.168.12.5/24"
+gateway: "192.168.12.1"
+vlans:
+  - id: 250
+    ipaddress: 192.168.250.5/24
+  - id: 3401
+    ipaddress: 10.50.1.1/24
+  - id: 3402
+    ipaddress: 10.50.2.1/24

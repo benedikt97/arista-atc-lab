@@ -1,0 +1,264 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_rz-spine1_Ethernet4
+  shutdown: false
+  mtu: 1500
+  ipv6_address: 2001:db8:b3:6::2/64
+  peer: rz-spine1
+  peer_interface: Ethernet4
+  peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet5
+  description: SERVER_server1_Server1
+  shutdown: false
+  spanning_tree_portfast: edge
+  peer: server1
+  peer_interface: Server1
+  peer_type: server
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 11
+hostname: rz-l-leaf3
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 02:1c:73:00:00:99
+ipv6_prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY-V6
+  sequence_numbers:
+  - sequence: 10
+    action: permit 2001:db8:a1::/48 eq 64
+  - sequence: 20
+    action: permit 2001:db8:a2::/48 eq 64
+ipv6_unicast_routing: true
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$KOB7dXerN/zU0qwP$AyKdyby06XyR3P0PQuHFXZNJrBRefN4UZU/C0xxp7eaYcsMIqII8knTPSQe3abzVzjwSpvtUL55AnE.i/pc/s/
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ipv6_address: 2001:db8:a1:7::1/64
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ipv6_address: 2001:db8:a2:7::1/64
+- name: Loopback10
+  description: DIAG_VRF_VRF4
+  shutdown: false
+  vrf: VRF4
+  ip_address: 10.255.10.7/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management0
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.22.0.107/24
+  type: oob
+  gateway: 172.22.0.1
+metadata:
+  is_deployed: true
+  platform: cEOS-lab
+  fabric_name: FABRIC
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 30
+    type: permit
+    match:
+    - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65107'
+  router_id: 10.255.1.7
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv6
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 2001:db8:b3:6::1
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65101'
+    peer: rz-spine1
+    description: rz-spine1_Ethernet4
+  - ip_address: 2001:db8:a1:1::1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65101'
+    peer: rz-spine1
+    description: rz-spine1_Loopback0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 11
+    tenant: LABCOMPANY
+    rd: 10.255.1.7:10011
+    route_targets:
+      both:
+      - 10011:10011
+    redistribute_routes:
+    - learned
+  - id: 12
+    tenant: LABCOMPANY
+    rd: 10.255.1.7:10012
+    route_targets:
+      both:
+      - 10012:10012
+    redistribute_routes:
+    - learned
+  - id: 3402
+    tenant: LABCOMPANY
+    rd: 10.255.1.7:13402
+    route_targets:
+      both:
+      - 13402:13402
+    redistribute_routes:
+    - learned
+  - id: 3401
+    tenant: LABCOMPANY
+    rd: 10.255.1.7:13401
+    route_targets:
+      both:
+      - 13401:13401
+    redistribute_routes:
+    - learned
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  address_family_ipv6:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+  vrfs:
+  - name: VRF4
+    rd: 10.255.1.7:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    router_id: 10.255.1.7
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 4096
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 172.22.0.1
+transceiver_qsfp_default_mode_4x10: true
+virtual_source_nat_vrfs:
+- name: VRF4
+  ip_address: 10.255.10.7
+vlan_interfaces:
+- name: Vlan11
+  description: VRF10_VLAN11
+  shutdown: false
+  vrf: VRF4
+  ip_address_virtual: 192.168.11.1/24
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:D11::1/48
+  tenant: LABCOMPANY
+- name: Vlan12
+  description: VRF10_VLAN12
+  shutdown: false
+  vrf: VRF4
+  ip_address_virtual: 192.168.12.1/24
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:D12::1/48
+  tenant: LABCOMPANY
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: VRF10_VLAN11
+  tenant: LABCOMPANY
+- id: 12
+  name: VRF10_VLAN12
+  tenant: LABCOMPANY
+- id: 3401
+  name: SURVEILLANCE
+  tenant: LABCOMPANY
+- id: 3402
+  name: PRINT
+  tenant: LABCOMPANY
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF4
+  ip_routing: true
+  ipv6_routing: true
+  tenant: LABCOMPANY
+vxlan_interface:
+  vxlan1:
+    description: rz-l-leaf3_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      encapsulations:
+        ipv6: true
+      vlans:
+      - id: 11
+        vni: 10011
+      - id: 12
+        vni: 10012
+      - id: 3401
+        vni: 13401
+      - id: 3402
+        vni: 13402
+      vrfs:
+      - name: VRF4
+        vni: 10

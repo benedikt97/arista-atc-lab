@@ -1,0 +1,8 @@
+hostname: "tower-position1" 
+ipaddress: "192.168.11.6/24"
+gateway: "192.168.11.1"
+vlans:
+  - id: 3401
+    ipaddress: 10.50.1.6/24
+  - id: 3402
+    ipaddress: 10.50.2.6/24
