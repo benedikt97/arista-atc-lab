@@ -29,7 +29,7 @@ all:
 
     NETWORK_SERVICES_RADAR:
       children:
-        RADARSTATION-EDGE1:
+        RADAR_EDGE1:
     NETWORK_SERVICES_CENTER:
       children:
         RZ_SDF_LEAF1:

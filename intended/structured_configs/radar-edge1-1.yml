@@ -123,6 +123,10 @@ prefix_lists:
     action: permit 10.255.3.0/24 eq 32
   - sequence: 20
     action: permit 10.255.4.0/27 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.255.112/31
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
@@ -137,6 +141,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 router_bfd:
   multihop:
     interval: 300
@@ -199,6 +211,49 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 220
+    tenant: ATC-FIDJI
+    rd: 10.255.3.9:10220
+    rd_evpn_domain:
+      domain: remote
+      rd: 10.255.3.9:10220
+    route_targets:
+      both:
+      - 10220:10220
+      import_export_evpn_domains:
+      - domain: remote
+        route_target: 10220:10220
+    redistribute_routes:
+    - learned
+  - id: 221
+    tenant: ATC-FIDJI
+    rd: 10.255.3.9:10221
+    rd_evpn_domain:
+      domain: remote
+      rd: 10.255.3.9:10221
+    route_targets:
+      both:
+      - 10221:10221
+      import_export_evpn_domains:
+      - domain: remote
+        route_target: 10221:10221
+    redistribute_routes:
+    - learned
+  - id: 250
+    tenant: ATC-FIDJI
+    rd: 10.255.3.9:10250
+    rd_evpn_domain:
+      domain: remote
+      rd: 10.255.3.9:10250
+    route_targets:
+      both:
+      - 10250:10250
+      import_export_evpn_domains:
+      - domain: remote
+        route_target: 10250:10250
+    redistribute_routes:
+    - learned
   address_family_evpn:
     neighbor_default:
       next_hop_self_received_evpn_routes:
@@ -220,6 +275,51 @@ router_bgp:
       activate: false
     - name: EVPN-OVERLAY-CORE
       activate: false
+  vrfs:
+  - name: VRF-CAM
+    rd: 10.255.3.9:12
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+    router_id: 10.255.3.9
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: 10.255.255.113
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: radar-edge1-2_Vlan3011
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
+  - name: VRF-RDR
+    rd: 10.255.3.9:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    router_id: 10.255.3.9
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: 10.255.255.113
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: radar-edge1-2_Vlan3010
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: mstp
@@ -244,6 +344,49 @@ vlan_interfaces:
   ip_address: 10.255.255.80/31
   mtu: 1500
   no_autostate: true
+- name: Vlan220
+  description: VRFRDR_VLAN220_CAM_TOWER
+  shutdown: false
+  vrf: VRF-CAM
+  ip_address_virtual: 192.168.220.1/24
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:D220::1/48
+  tenant: ATC-FIDJI
+- name: Vlan221
+  description: VRFRDR_VLAN250_CAM_RDR
+  shutdown: false
+  vrf: VRF-CAM
+  ip_address_virtual: 192.168.221.1/24
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:D221::1/48
+  tenant: ATC-FIDJI
+- name: Vlan3011
+  description: MLAG_L3_VRF_VRF-CAM
+  shutdown: false
+  vrf: VRF-CAM
+  ip_address: 10.255.255.112/31
+  mtu: 1500
+  tenant: ATC-FIDJI
+  type: underlay_peering
+- name: Vlan250
+  description: VRFRDR_VLAN250_RDR
+  shutdown: false
+  vrf: VRF-RDR
+  ip_address_virtual: 192.168.250.1/24
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:D250::1/48
+  tenant: ATC-FIDJI
+- name: Vlan3010
+  description: MLAG_L3_VRF_VRF-RDR
+  shutdown: false
+  vrf: VRF-RDR
+  ip_address: 10.255.255.112/31
+  mtu: 1500
+  tenant: ATC-FIDJI
+  type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
@@ -260,9 +403,36 @@ vlans:
   trunk_groups:
   - MLAG
   tenant: system
+- id: 220
+  name: VRFRDR_VLAN220_CAM_TOWER
+  tenant: ATC-FIDJI
+- id: 221
+  name: VRFRDR_VLAN250_CAM_RDR
+  tenant: ATC-FIDJI
+- id: 3011
+  name: MLAG_L3_VRF_VRF-CAM
+  trunk_groups:
+  - MLAG
+  tenant: ATC-FIDJI
+- id: 250
+  name: VRFRDR_VLAN250_RDR
+  tenant: ATC-FIDJI
+- id: 3010
+  name: MLAG_L3_VRF_VRF-RDR
+  trunk_groups:
+  - MLAG
+  tenant: ATC-FIDJI
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: VRF-CAM
+  ip_routing: true
+  ipv6_routing: true
+  tenant: ATC-FIDJI
+- name: VRF-RDR
+  ip_routing: true
+  ipv6_routing: true
+  tenant: ATC-FIDJI
 vxlan_interface:
   vxlan1:
     description: radar-edge1-1_VTEP
@@ -270,3 +440,15 @@ vxlan_interface:
       source_interface: Loopback1
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id
+      vlans:
+      - id: 220
+        vni: 10220
+      - id: 221
+        vni: 10221
+      - id: 250
+        vni: 10250
+      vrfs:
+      - name: VRF-CAM
+        vni: 12
+      - name: VRF-RDR
+        vni: 11

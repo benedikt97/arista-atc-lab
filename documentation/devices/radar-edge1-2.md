@@ -189,12 +189,34 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 220 | VRFRDR_VLAN220_CAM_TOWER | - |
+| 221 | VRFRDR_VLAN250_CAM_RDR | - |
+| 250 | VRFRDR_VLAN250_RDR | - |
+| 3010 | MLAG_L3_VRF_VRF-RDR | MLAG |
+| 3011 | MLAG_L3_VRF_VRF-CAM | MLAG |
 | 4093 | MLAG_L3 | MLAG |
 | 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
 ```eos
+!
+vlan 220
+   name VRFRDR_VLAN220_CAM_TOWER
+!
+vlan 221
+   name VRFRDR_VLAN250_CAM_RDR
+!
+vlan 250
+   name VRFRDR_VLAN250_RDR
+!
+vlan 3010
+   name MLAG_L3_VRF_VRF-RDR
+   trunk group MLAG
+!
+vlan 3011
+   name MLAG_L3_VRF_VRF-CAM
+   trunk group MLAG
 !
 vlan 4093
    name MLAG_L3
@@ -336,6 +358,11 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan220 | VRFRDR_VLAN220_CAM_TOWER | VRF-CAM | - | False |
+| Vlan221 | VRFRDR_VLAN250_CAM_RDR | VRF-CAM | - | False |
+| Vlan250 | VRFRDR_VLAN250_RDR | VRF-RDR | - | False |
+| Vlan3010 | MLAG_L3_VRF_VRF-RDR | VRF-RDR | 1500 | False |
+| Vlan3011 | MLAG_L3_VRF_VRF-CAM | VRF-CAM | 1500 | False |
 | Vlan4093 | MLAG_L3 | default | 1500 | False |
 | Vlan4094 | MLAG | default | 1500 | False |
 
@@ -343,12 +370,63 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan220 |  VRF-CAM  |  -  |  192.168.220.1/24  |  -  |  -  |  -  |
+| Vlan221 |  VRF-CAM  |  -  |  192.168.221.1/24  |  -  |  -  |  -  |
+| Vlan250 |  VRF-RDR  |  -  |  192.168.250.1/24  |  -  |  -  |  -  |
+| Vlan3010 |  VRF-RDR  |  10.255.255.113/31  |  -  |  -  |  -  |  -  |
+| Vlan3011 |  VRF-CAM  |  10.255.255.113/31  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  10.255.255.113/31  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.255.255.81/31  |  -  |  -  |  -  |  -  |
+
+##### IPv6
+
+| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
+| Vlan220 | VRF-CAM | - | 2001:DB8:D220::1/48 | - | - | - | - | - | - |
+| Vlan221 | VRF-CAM | - | 2001:DB8:D221::1/48 | - | - | - | - | - | - |
+| Vlan250 | VRF-RDR | - | 2001:DB8:D250::1/48 | - | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan220
+   description VRFRDR_VLAN220_CAM_TOWER
+   no shutdown
+   vrf VRF-CAM
+   ipv6 enable
+   ip address virtual 192.168.220.1/24
+   ipv6 address virtual 2001:DB8:D220::1/48
+!
+interface Vlan221
+   description VRFRDR_VLAN250_CAM_RDR
+   no shutdown
+   vrf VRF-CAM
+   ipv6 enable
+   ip address virtual 192.168.221.1/24
+   ipv6 address virtual 2001:DB8:D221::1/48
+!
+interface Vlan250
+   description VRFRDR_VLAN250_RDR
+   no shutdown
+   vrf VRF-RDR
+   ipv6 enable
+   ip address virtual 192.168.250.1/24
+   ipv6 address virtual 2001:DB8:D250::1/48
+!
+interface Vlan3010
+   description MLAG_L3_VRF_VRF-RDR
+   no shutdown
+   mtu 1500
+   vrf VRF-RDR
+   ip address 10.255.255.113/31
+!
+interface Vlan3011
+   description MLAG_L3_VRF_VRF-CAM
+   no shutdown
+   mtu 1500
+   vrf VRF-CAM
+   ip address 10.255.255.113/31
 !
 interface Vlan4093
    description MLAG_L3
@@ -374,6 +452,21 @@ interface Vlan4094
 | UDP port | 4789 |
 | EVPN MLAG Shared Router MAC | mlag-system-id |
 
+##### VLAN to VNI, Flood List and Multicast Group Mappings
+
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 220 | 10220 | - | - |
+| 221 | 10221 | - | - |
+| 250 | 10250 | - | - |
+
+##### VRF to VNI and Multicast Group Mappings
+
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
+| VRF-CAM | 12 | - |
+| VRF-RDR | 11 | - |
+
 #### VXLAN Interface Device Configuration
 
 ```eos
@@ -383,6 +476,11 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
+   vxlan vlan 220 vni 10220
+   vxlan vlan 221 vni 10221
+   vxlan vlan 250 vni 10250
+   vxlan vrf VRF-CAM vni 12
+   vxlan vrf VRF-RDR vni 11
 ```
 
 ## Routing
@@ -417,6 +515,8 @@ ip virtual-router mac-address 02:1c:73:00:00:99
 | --- | --------------- |
 | default | True |
 | MGMT | False |
+| VRF-CAM | True |
+| VRF-RDR | True |
 
 #### IP Routing Device Configuration
 
@@ -424,6 +524,8 @@ ip virtual-router mac-address 02:1c:73:00:00:99
 !
 ip routing
 no ip routing vrf MGMT
+ip routing vrf VRF-CAM
+ip routing vrf VRF-RDR
 ```
 
 ### IPv6 Routing
@@ -434,6 +536,8 @@ no ip routing vrf MGMT
 | --- | --------------- |
 | default | False |
 | MGMT | false |
+| VRF-CAM | true |
+| VRF-RDR | true |
 
 ### Static Routes
 
@@ -515,6 +619,8 @@ ASN Notation: asplain
 | 10.250.230.14 | 65202 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.1.4 | 65104 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
 | 10.255.255.112 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
+| 10.255.255.112 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF-CAM | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
+| 10.255.255.112 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF-RDR | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -532,6 +638,21 @@ ASN Notation: asplain
 | Remote Domain Peer Groups | EVPN-OVERLAY-CORE |
 | L3 Gateway Configured | True |
 | L3 Gateway Inter-domain | True |
+
+#### Router BGP VLANs
+
+| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
+| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
+| 220 | 10.255.3.10:10220 | 10220:10220<br>remote 10220:10220 | - | - | learned |
+| 221 | 10.255.3.10:10221 | 10221:10221<br>remote 10221:10221 | - | - | learned |
+| 250 | 10.255.3.10:10250 | 10250:10250<br>remote 10250:10250 | - | - | learned |
+
+#### Router BGP VRFs
+
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| VRF-CAM | 10.255.3.10:12 | connected | - |
+| VRF-RDR | 10.255.3.10:11 | connected | - |
 
 #### Router BGP Device Configuration
 
@@ -574,6 +695,27 @@ router bgp 65110
    neighbor 10.255.255.112 description radar-edge1-1_Vlan4093
    redistribute connected route-map RM-CONN-2-BGP
    !
+   vlan 220
+      rd 10.255.3.10:10220
+      rd evpn domain remote 10.255.3.10:10220
+      route-target both 10220:10220
+      route-target import export evpn domain remote 10220:10220
+      redistribute learned
+   !
+   vlan 221
+      rd 10.255.3.10:10221
+      rd evpn domain remote 10.255.3.10:10221
+      route-target both 10221:10221
+      route-target import export evpn domain remote 10221:10221
+      redistribute learned
+   !
+   vlan 250
+      rd 10.255.3.10:10250
+      rd evpn domain remote 10.255.3.10:10250
+      route-target both 10250:10250
+      route-target import export evpn domain remote 10250:10250
+      redistribute learned
+   !
    address-family evpn
       neighbor EVPN-OVERLAY-CORE activate
       neighbor EVPN-OVERLAY-CORE domain remote
@@ -585,6 +727,26 @@ router bgp 65110
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
+   !
+   vrf VRF-CAM
+      rd 10.255.3.10:12
+      route-target import evpn 12:12
+      route-target export evpn 12:12
+      router-id 10.255.3.10
+      update wait-install
+      neighbor 10.255.255.112 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.255.112 description radar-edge1-1_Vlan3011
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
+   !
+   vrf VRF-RDR
+      rd 10.255.3.10:11
+      route-target import evpn 11:11
+      route-target export evpn 11:11
+      router-id 10.255.3.10
+      update wait-install
+      neighbor 10.255.255.112 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.255.112 description radar-edge1-1_Vlan3010
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
 ```
 
 ## BFD
@@ -633,6 +795,12 @@ router bfd
 | 10 | permit 10.255.3.0/24 eq 32 |
 | 20 | permit 10.255.4.0/27 eq 32 |
 
+##### PL-MLAG-PEER-VRFS
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 10.255.255.112/31 |
+
 #### Prefix-lists Device Configuration
 
 ```eos
@@ -640,6 +808,9 @@ router bfd
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 10.255.3.0/24 eq 32
    seq 20 permit 10.255.4.0/27 eq 32
+!
+ip prefix-list PL-MLAG-PEER-VRFS
+   seq 10 permit 10.255.255.112/31
 ```
 
 ### Route-maps
@@ -651,6 +822,13 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
+
+##### RM-CONN-2-BGP-VRFS
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | ip address prefix-list PL-MLAG-PEER-VRFS | - | - | - |
+| 20 | permit | - | - | - | - |
 
 ##### RM-MLAG-PEER-IN
 
@@ -665,6 +843,11 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
+route-map RM-CONN-2-BGP-VRFS deny 10
+   match ip address prefix-list PL-MLAG-PEER-VRFS
+!
+route-map RM-CONN-2-BGP-VRFS permit 20
+!
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
    set origin incomplete
@@ -677,10 +860,16 @@ route-map RM-MLAG-PEER-IN permit 10
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT | disabled |
+| VRF-CAM | enabled |
+| VRF-RDR | enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 !
 vrf instance MGMT
+!
+vrf instance VRF-CAM
+!
+vrf instance VRF-RDR
 ```
