@@ -229,7 +229,7 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | L2_center-leaf2-1_Ethernet8 | *trunk | *11-12,219-220,250,3401-3402 | *- | *- | 1 |
+| Ethernet1 | L2_acc-leaf2-1_Ethernet8 | *trunk | *11-12,219-220,250,3401-3402 | *- | *- | 1 |
 | Ethernet3 | MLAG_tower-leaf3-2_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet4 | MLAG_tower-leaf3-2_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet5 | SERVER_tower-position1_eth1 | *trunk | *11,3401-3402 | *11 | *- | 5 |
@@ -242,7 +242,7 @@ vlan 4094
 ```eos
 !
 interface Ethernet1
-   description L2_center-leaf2-1_Ethernet8
+   description L2_acc-leaf2-1_Ethernet8
    no shutdown
    channel-group 1 mode active
 !
@@ -278,7 +278,7 @@ interface Ethernet6
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | L2_center-leaf2-1_Port-Channel8 | trunk | 11-12,219-220,250,3401-3402 | - | - | - | - | 1 | - |
+| Port-Channel1 | L2_acc-leaf2-1_Port-Channel8 | trunk | 11-12,219-220,250,3401-3402 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_tower-leaf3-2_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel5 | SERVER_tower-position1_Bond0 | trunk | 11,3401-3402 | 11 | - | - | - | 5 | - |
 
@@ -287,7 +287,7 @@ interface Ethernet6
 ```eos
 !
 interface Port-Channel1
-   description L2_center-leaf2-1_Port-Channel8
+   description L2_acc-leaf2-1_Port-Channel8
    no shutdown
    switchport trunk allowed vlan 11-12,219-220,250,3401-3402
    switchport mode trunk

@@ -1,0 +1,64 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    router_id_pool: 10.255.1.0/24
+    loopback_ipv6_pool: 2001:DB8:A1::/48
+    vtep_loopback_ipv6_pool: 2001:DB8:A2::/48
+    uplink_switches: ['rz-spine1', 'rz-spine2']
+    uplink_ipv6_pool: 2001:DB8:B4::/48
+    virtual_router_mac_address: 02:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+    mlag_peer_ipv4_pool: 10.255.255.64/27
+    mlag_peer_l3_ipv4_pool: 10.255.255.96/27
+    loopback_ipv4_pool: 10.255.1.0/24
+    vtep_loopback_ipv4_pool: 10.255.2.0/27
+    uplink_ipv4_pool: 10.255.201.0/26
+    evpn_gateway:
+      evpn_l2:
+        enabled: true
+      evpn_l3:
+        enabled: true
+        inter_domain: true
+
+
+  node_groups:
+    - group: RZ-SDF-LEAF1
+      nodes:
+        - name: rz-leaf1-1
+          id: 3
+          bgp_as: 65103
+          mgmt_ip: 172.22.0.103/24
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+          evpn_gateway:
+            remote_peers:
+              - hostname: radar-edge1-1
+                ip_address: 10.255.3.9
+                bgp_as: 65109
+        - name: rz-leaf1-2
+          id: 4
+          bgp_as: 65104
+          mgmt_ip: 172.22.0.104/24
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+          evpn_gateway:
+            remote_peers:
+              - hostname: radar-edge1-2
+                ip_address: 10.255.3.10
+                bgp_as: 65110
+
+l3_edge:
+  p2p_links:
+    - ip: [ 10.250.230.1/30, 10.250.230.2/30 ]
+      nodes: [ rz-leaf1-1, router ]
+      interfaces: [ Ethernet8, eth1 ]
+      include_in_underlay_protocol: true
+      as: [ 65103, 65201 ]
+      ipv6_enable: true 
+    - ip: [ 10.250.230.5/30, 10.250.230.6/30 ]
+      nodes: [ rz-leaf1-2, router ]
+      interfaces: [ Ethernet8, eth2 ]
+      include_in_underlay_protocol: true
+      as: [ 65104, 65201 ]

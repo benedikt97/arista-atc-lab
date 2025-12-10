@@ -10,34 +10,34 @@ all:
               hosts:
                 rz-spine1:
                 rz-spine2:
-            RZ-SDF-LEAF1:
+            RZ_SDF_LEAF1:
               hosts:
-                rz-sdf-leaf1-1:
-                rz-sdf-leaf1-2:
-            CENTER-LEAF2:
+                rz-leaf1-1:
+                rz-leaf1-2:
+            CENTER_LEAF2:
               hosts:
-                center-leaf2-1:
-                center-leaf2-2:
-            TOWER-LEAF3: 
+                acc-leaf2-1:
+                acc-leaf2-2:
+            TOWER_LEAF3: 
               hosts: 
                 tower-leaf3-1:
                 tower-leaf3-2:
-            RADARSTATION-EDGE1: 
+            RADAR_EDGE1: 
               hosts: 
-                radarstation-edge1-1:
-                radarstation-edge1-2:
+                radar-edge1-1:
+                radar-edge1-2:
 
     NETWORK_SERVICES_RADAR:
       children:
         RADARSTATION-EDGE1:
     NETWORK_SERVICES_CENTER:
       children:
-        RZ-SDF-LEAF1:
-        CENTER-LEAF2:
-        TOWER-LEAF3:
+        RZ_SDF_LEAF1:
+        CENTER_LEAF2:
+        TOWER_LEAF3:
     CONNECTED_ENDPOINTS:
       children:
-        RZ-SDF-LEAF1:
-        CENTER-LEAF2:
-        TOWER-LEAF3:
-        RADARSTATION-EDGE1:
+        RZ_SDF_LEAF1:
+        CENTER_LEAF2:
+        TOWER_LEAF3:
+        RADAR_EDGE1:

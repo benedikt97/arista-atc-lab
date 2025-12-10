@@ -5,21 +5,21 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: MLAG_radarstation-edge1-2_Ethernet3
+  description: MLAG_radar-edge1-2_Ethernet3
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: radarstation-edge1-2
+  peer: radar-edge1-2
   peer_interface: Ethernet3
   peer_type: mlag_peer
 - name: Ethernet4
-  description: MLAG_radarstation-edge1-2_Ethernet4
+  description: MLAG_radar-edge1-2_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: radarstation-edge1-2
+  peer: radar-edge1-2
   peer_interface: Ethernet4
   peer_type: mlag_peer
 - name: Ethernet1
@@ -53,7 +53,7 @@ ethernet_interfaces:
   peer: radar
   peer_interface: eth1
   peer_type: server
-hostname: radarstation-edge1-1
+hostname: radar-edge1-1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -97,7 +97,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_radarstation-edge1-2_Port-Channel3
+  description: MLAG_radar-edge1-2_Port-Channel3
   shutdown: false
   switchport:
     enabled: true
@@ -169,7 +169,7 @@ router_bgp:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
     remote_as: '65109'
-    description: radarstation-edge1-2
+    description: radar-edge1-2
     next_hop_self: true
     send_community: all
     maximum_routes: 12000
@@ -195,13 +195,13 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.255.113
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: radarstation-edge1-2
-    description: radarstation-edge1-2_Vlan4093
+    peer: radar-edge1-2
+    description: radar-edge1-2_Vlan4093
   - ip_address: 10.255.1.3
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65103'
-    peer: rz-sdf-leaf1-1
-    description: rz-sdf-leaf1-1_Loopback0
+    peer: rz-leaf1-1
+    description: rz-leaf1-1_Loopback0
   - ip_address: 10.250.230.10
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65202'
@@ -293,7 +293,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.255.113
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: radarstation-edge1-2_Vlan3011
+      description: radar-edge1-2_Vlan3011
     redistribute:
       connected:
         enabled: true
@@ -315,7 +315,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.255.113
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: radarstation-edge1-2_Vlan3010
+      description: radar-edge1-2_Vlan3010
     redistribute:
       connected:
         enabled: true
@@ -435,7 +435,7 @@ vrfs:
   tenant: ATC-FIDJI
 vxlan_interface:
   vxlan1:
-    description: radarstation-edge1-1_VTEP
+    description: radar-edge1-1_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

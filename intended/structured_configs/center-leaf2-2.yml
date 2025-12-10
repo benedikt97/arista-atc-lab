@@ -34,7 +34,7 @@ ethernet_interfaces:
   peer_interface: eth2
   peer_type: server
   port_profile: CLIENT
-hostname: center-leaf2-2
+hostname: acc-leaf2-2
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -365,7 +365,7 @@ vrfs:
   tenant: ATC-FIDJI
 vxlan_interface:
   vxlan1:
-    description: center-leaf2-2_VTEP
+    description: acc-leaf2-2_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

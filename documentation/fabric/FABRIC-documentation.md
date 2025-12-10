@@ -17,12 +17,12 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| FABRIC | l3leaf | center-leaf2-1 | 172.22.0.105/24 | cEOS-lab | Provisioned | - |
-| FABRIC | l3leaf | center-leaf2-2 | 172.22.0.106/24 | cEOS-lab | Provisioned | - |
-| FABRIC | l3leaf | radarstation-edge1-1 | 172.22.0.109/24 | cEOS-lab | Provisioned | - |
-| FABRIC | l3leaf | radarstation-edge1-2 | 172.22.0.110/24 | cEOS-lab | Provisioned | - |
-| FABRIC | l3leaf | rz-sdf-leaf1-1 | 172.22.0.103/24 | vEOS-lab | Provisioned | - |
-| FABRIC | l3leaf | rz-sdf-leaf1-2 | 172.22.0.104/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | acc-leaf2-1 | 172.22.0.105/24 | cEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | acc-leaf2-2 | 172.22.0.106/24 | cEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | radar-edge1-1 | 172.22.0.109/24 | cEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | radar-edge1-2 | 172.22.0.110/24 | cEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | rz-leaf1-1 | 172.22.0.103/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | rz-leaf1-2 | 172.22.0.104/24 | vEOS-lab | Provisioned | - |
 | FABRIC | spine | rz-spine1 | 172.22.0.101/24 | cEOS-lab | Provisioned | - |
 | FABRIC | spine | rz-spine2 | 172.22.0.102/24 | cEOS-lab | Provisioned | - |
 | FABRIC | l2leaf | tower-leaf3-1 | 172.22.0.107/24 | cEOS-lab | Provisioned | - |
@@ -39,19 +39,19 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
-| l3leaf | center-leaf2-1 | Ethernet1 | spine | rz-spine1 | Ethernet3 |
-| l3leaf | center-leaf2-1 | Ethernet2 | spine | rz-spine2 | Ethernet3 |
-| l3leaf | center-leaf2-1 | Ethernet8 | l2leaf | tower-leaf3-1 | Ethernet1 |
-| l3leaf | center-leaf2-2 | Ethernet1 | spine | rz-spine1 | Ethernet4 |
-| l3leaf | center-leaf2-2 | Ethernet2 | spine | rz-spine2 | Ethernet4 |
-| l3leaf | radarstation-edge1-1 | Ethernet3 | mlag_peer | radarstation-edge1-2 | Ethernet3 |
-| l3leaf | radarstation-edge1-1 | Ethernet4 | mlag_peer | radarstation-edge1-2 | Ethernet4 |
-| l3leaf | rz-sdf-leaf1-1 | Ethernet1 | spine | rz-spine1 | Ethernet1 |
-| l3leaf | rz-sdf-leaf1-1 | Ethernet2 | spine | rz-spine2 | Ethernet1 |
-| l3leaf | rz-sdf-leaf1-1 | Ethernet3 | mlag_peer | rz-sdf-leaf1-2 | Ethernet3 |
-| l3leaf | rz-sdf-leaf1-1 | Ethernet4 | mlag_peer | rz-sdf-leaf1-2 | Ethernet4 |
-| l3leaf | rz-sdf-leaf1-2 | Ethernet1 | spine | rz-spine1 | Ethernet2 |
-| l3leaf | rz-sdf-leaf1-2 | Ethernet2 | spine | rz-spine2 | Ethernet2 |
+| l3leaf | acc-leaf2-1 | Ethernet1 | spine | rz-spine1 | Ethernet3 |
+| l3leaf | acc-leaf2-1 | Ethernet2 | spine | rz-spine2 | Ethernet3 |
+| l3leaf | acc-leaf2-1 | Ethernet8 | l2leaf | tower-leaf3-1 | Ethernet1 |
+| l3leaf | acc-leaf2-2 | Ethernet1 | spine | rz-spine1 | Ethernet4 |
+| l3leaf | acc-leaf2-2 | Ethernet2 | spine | rz-spine2 | Ethernet4 |
+| l3leaf | radar-edge1-1 | Ethernet3 | mlag_peer | radar-edge1-2 | Ethernet3 |
+| l3leaf | radar-edge1-1 | Ethernet4 | mlag_peer | radar-edge1-2 | Ethernet4 |
+| l3leaf | rz-leaf1-1 | Ethernet1 | spine | rz-spine1 | Ethernet1 |
+| l3leaf | rz-leaf1-1 | Ethernet2 | spine | rz-spine2 | Ethernet1 |
+| l3leaf | rz-leaf1-1 | Ethernet3 | mlag_peer | rz-leaf1-2 | Ethernet3 |
+| l3leaf | rz-leaf1-1 | Ethernet4 | mlag_peer | rz-leaf1-2 | Ethernet4 |
+| l3leaf | rz-leaf1-2 | Ethernet1 | spine | rz-spine1 | Ethernet2 |
+| l3leaf | rz-leaf1-2 | Ethernet2 | spine | rz-spine2 | Ethernet2 |
 | l2leaf | tower-leaf3-1 | Ethernet3 | mlag_peer | tower-leaf3-2 | Ethernet3 |
 | l2leaf | tower-leaf3-1 | Ethernet4 | mlag_peer | tower-leaf3-2 | Ethernet4 |
 
@@ -69,14 +69,14 @@
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
-| center-leaf2-1 | Ethernet1 | 10.255.202.17/31 | rz-spine1 | Ethernet3 | 10.255.202.16/31 |
-| center-leaf2-1 | Ethernet2 | 10.255.202.19/31 | rz-spine2 | Ethernet3 | 10.255.202.18/31 |
-| center-leaf2-2 | Ethernet1 | 10.255.202.21/31 | rz-spine1 | Ethernet4 | 10.255.202.20/31 |
-| center-leaf2-2 | Ethernet2 | 10.255.202.23/31 | rz-spine2 | Ethernet4 | 10.255.202.22/31 |
-| rz-sdf-leaf1-1 | Ethernet1 | 10.255.201.9/31 | rz-spine1 | Ethernet1 | 10.255.201.8/31 |
-| rz-sdf-leaf1-1 | Ethernet2 | 10.255.201.11/31 | rz-spine2 | Ethernet1 | 10.255.201.10/31 |
-| rz-sdf-leaf1-2 | Ethernet1 | 10.255.201.13/31 | rz-spine1 | Ethernet2 | 10.255.201.12/31 |
-| rz-sdf-leaf1-2 | Ethernet2 | 10.255.201.15/31 | rz-spine2 | Ethernet2 | 10.255.201.14/31 |
+| acc-leaf2-1 | Ethernet1 | 10.255.202.17/31 | rz-spine1 | Ethernet3 | 10.255.202.16/31 |
+| acc-leaf2-1 | Ethernet2 | 10.255.202.19/31 | rz-spine2 | Ethernet3 | 10.255.202.18/31 |
+| acc-leaf2-2 | Ethernet1 | 10.255.202.21/31 | rz-spine1 | Ethernet4 | 10.255.202.20/31 |
+| acc-leaf2-2 | Ethernet2 | 10.255.202.23/31 | rz-spine2 | Ethernet4 | 10.255.202.22/31 |
+| rz-leaf1-1 | Ethernet1 | 10.255.201.9/31 | rz-spine1 | Ethernet1 | 10.255.201.8/31 |
+| rz-leaf1-1 | Ethernet2 | 10.255.201.11/31 | rz-spine2 | Ethernet1 | 10.255.201.10/31 |
+| rz-leaf1-2 | Ethernet1 | 10.255.201.13/31 | rz-spine1 | Ethernet2 | 10.255.201.12/31 |
+| rz-leaf1-2 | Ethernet2 | 10.255.201.15/31 | rz-spine2 | Ethernet2 | 10.255.201.14/31 |
 
 ### Loopback Interfaces (BGP EVPN Peering)
 
@@ -89,12 +89,12 @@
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
-| FABRIC | center-leaf2-1 | 10.255.1.5/32 |
-| FABRIC | center-leaf2-2 | 10.255.1.6/32 |
-| FABRIC | radarstation-edge1-1 | 10.255.3.9/32 |
-| FABRIC | radarstation-edge1-2 | 10.255.3.10/32 |
-| FABRIC | rz-sdf-leaf1-1 | 10.255.1.3/32 |
-| FABRIC | rz-sdf-leaf1-2 | 10.255.1.4/32 |
+| FABRIC | acc-leaf2-1 | 10.255.1.5/32 |
+| FABRIC | acc-leaf2-2 | 10.255.1.6/32 |
+| FABRIC | radar-edge1-1 | 10.255.3.9/32 |
+| FABRIC | radar-edge1-2 | 10.255.3.10/32 |
+| FABRIC | rz-leaf1-1 | 10.255.1.3/32 |
+| FABRIC | rz-leaf1-2 | 10.255.1.4/32 |
 | FABRIC | rz-spine1 | 10.255.1.1/32 |
 | FABRIC | rz-spine2 | 10.255.1.2/32 |
 
@@ -109,9 +109,9 @@
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
-| FABRIC | center-leaf2-1 | 10.255.2.5/32 |
-| FABRIC | center-leaf2-2 | 10.255.2.6/32 |
-| FABRIC | radarstation-edge1-1 | 10.255.4.9/32 |
-| FABRIC | radarstation-edge1-2 | 10.255.4.9/32 |
-| FABRIC | rz-sdf-leaf1-1 | 10.255.2.3/32 |
-| FABRIC | rz-sdf-leaf1-2 | 10.255.2.3/32 |
+| FABRIC | acc-leaf2-1 | 10.255.2.5/32 |
+| FABRIC | acc-leaf2-2 | 10.255.2.6/32 |
+| FABRIC | radar-edge1-1 | 10.255.4.9/32 |
+| FABRIC | radar-edge1-2 | 10.255.4.9/32 |
+| FABRIC | rz-leaf1-1 | 10.255.2.3/32 |
+| FABRIC | rz-leaf1-2 | 10.255.2.3/32 |

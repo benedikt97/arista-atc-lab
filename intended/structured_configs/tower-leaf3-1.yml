@@ -23,12 +23,12 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: mlag_peer
 - name: Ethernet1
-  description: L2_center-leaf2-1_Ethernet8
+  description: L2_acc-leaf2-1_Ethernet8
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: center-leaf2-1
+  peer: acc-leaf2-1
   peer_interface: Ethernet8
   peer_type: l3leaf
 - name: Ethernet5
@@ -94,7 +94,7 @@ port_channel_interfaces:
       groups:
       - MLAG
 - name: Port-Channel1
-  description: L2_center-leaf2-1_Port-Channel8
+  description: L2_acc-leaf2-1_Port-Channel8
   shutdown: false
   mlag: 1
   switchport:

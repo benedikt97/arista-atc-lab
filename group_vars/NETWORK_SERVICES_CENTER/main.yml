@@ -1,0 +1,48 @@
+---
+tenants:
+  - name: ATC-FIDJI
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRFEXT
+        vrf_vni: 10
+        svis:
+          - id: 11
+            name: VRFEXT_VLAN11_CLIENT
+            enabled: true
+            ip_address_virtual: 192.168.11.1/24
+            ipv6_address_virtuals: [2001:DB8:D11::1/48]
+          - id: 12
+            name: VRF10_VLAN12_SERVER
+            enabled: true
+            ip_address_virtual: 192.168.12.1/24
+            ipv6_address_virtuals: [2001:DB8:D12::1/48]
+      - name: VRF-RDR
+        vrf_vni: 11
+        svis:
+          - id: 250
+            name: VRFRDR_VLAN250_RDR
+            enabled: true
+            ip_address_virtual: 192.168.250.1/24
+            ipv6_address_virtuals: [2001:DB8:D250::1/48]
+      - name: VRF-CAM
+        vrf_vni: 12
+        svis:
+          - id: 219
+            name: VRFRDR_VLAN219_REC
+            enabled: true
+            ip_address_virtual: 192.168.219.1/24
+            ipv6_address_virtuals: [2001:DB8:D219::1/48]
+          - id: 220
+            name: VRFRDR_VLAN220_CAM_TOWER
+            enabled: true
+            ip_address_virtual: 192.168.220.1/24
+            ipv6_address_virtuals: [2001:DB8:D220::1/48]
+
+
+
+    l2vlans:
+      - id: 3401
+        name: CHANNEL-A
+      - id: 3402
+        name: CHANNEL-B
+
