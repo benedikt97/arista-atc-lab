@@ -1,10 +1,12 @@
 #!/bin/bash
+exec 1>server.log 2>&1
 set -x
-sleep 5
-/usr/lib/frr/bgpd -d
-/usr/lib/frr/nhrpd -d
-sleep 5
-ip tunnel add gre1 mode gre local 138.10.1.2 remote 138.10.1.1
-ip link set gre1 up
-sleep 5
+while ! pgrep zebra >/dev/null; do
+    sleep 0.1
+done
+ip tunnel add gre2 mode gre local 138.10.1.2 remote 138.10.1.1
+ip link set gre2 up
 vtysh -f router.cmd
+vtysh -c "write memory"
+
+

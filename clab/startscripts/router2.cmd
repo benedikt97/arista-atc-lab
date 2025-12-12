@@ -16,7 +16,7 @@ interface eth1
  ip address 138.10.1.2/30
 exit
 !
-interface gre1
+interface gre2
 ip address 10.250.231.2/30
 exit
 !
@@ -24,15 +24,14 @@ interface lo0
  ip address 10.255.1.255/32
 exit
 !
+ route-map ALLOW_ALL permit 10
+exit
+
 router bgp 65202
  bgp router-id 10.255.1.255
  neighbor ARISTAS peer-group
  neighbor 10.250.231.1 remote-as 65201
  neighbor 10.250.231.1 peer-group ARISTAS
- neighbor 10.250.230.1 remote-as 65103
- neighbor 10.250.230.1 peer-group ARISTAS
- neighbor 10.250.230.5 remote-as 65104
- neighbor 10.250.230.5 peer-group ARISTAS
  neighbor 10.250.230.9 remote-as 65109
  neighbor 10.250.230.9 peer-group ARISTAS
  neighbor 10.250.230.13 remote-as 65110
@@ -44,9 +43,6 @@ router bgp 65202
   neighbor ARISTAS route-map ALLOW_ALL in
   neighbor ARISTAS route-map ALLOW_ALL out
  exit-address-family
-exit
-!
-route-map ALLOW_ALL permit 10
 exit
 !
 end

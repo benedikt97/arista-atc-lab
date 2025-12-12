@@ -6,11 +6,28 @@ ip route add 192.168.0.0/16 via {{ gateway }}
 {% if hostname == "tower-df1" %}
 socat_loop () {
     while true; do
-    echo "This is a radar message" | \
+    echo "This is a direction finder message" | \
     socat - UDP4-DATAGRAM:255.255.255.255:5000,bind={{ ipaddress.split('/')[0] }},broadcast
     sleep 1
     done
 }
+socat_loop &
+{% endif %}
 
+{% if hostname == "radar-cam1" %}
+socat_loop () {
+    while true; do
+    pv -L 125000 /dev/random | socat -b 1400 -u - UDP:192.168.219.5:9000
+    done
+}
+socat_loop &
+{% endif %}
+
+{% if hostname == "tower-cam1" %}
+socat_loop () {
+    while true; do
+    pv -L 125000 /dev/random | socat -b 1400 -u - UDP:192.168.219.5:9000
+    done
+}
 socat_loop &
 {% endif %}

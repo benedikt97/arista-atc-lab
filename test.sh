@@ -5,7 +5,7 @@ check() {
     var2="$2"
     var3="$3"
 
-    docker exec $1 fping -t 50 -ac 1 $2 2> /dev/null && echo "[X] $1 reaches $2 - $3" || echo "[ ] $1 not reaches $2 - $3"
+    docker exec $1 fping -t 30 -ac 1 $2 2> /dev/null && echo "[X] $1 reaches $2 - $3" || echo "[ ] $1 not reaches $2 - $3"
 }
 
 echo "Testing Management network"

@@ -1,11 +1,12 @@
 from ansible.parsing.dataloader import DataLoader
 from ansible.inventory.manager import InventoryManager
 from graphviz import Digraph
-from flask import Flask, Response
+from flask import Flask, Response, render_template_string
 import threading
 import requests
 import json
 import urllib3
+import base64
 
 app = Flask(__name__)
 
@@ -44,23 +45,19 @@ def get_hosts():
     group = inventory.groups.get(group_name)
     if group:
         hosts = [h.name for h in group.get_hosts()]
-        print(hosts)
     else:
-        print("Group not found")
+        pass
     return hosts
 
 
-def get_information(hosts):
-    results = []
+def get_information(h):
+    result = {}
+    result["BGP"] = execute_command(h, "show bgp summary")
+    result["BGP_PEERS"] = execute_command(h, "show bgp neighbors")
+    result["MAC"] = execute_command(h, "show mac address-table count")
+    result["HOSTNAME"] = h
+    return result
 
-    for h in hosts:
-        result = {}
-        result["BGP"] = execute_command(h, "show bgp summary")
-        result["BGP_PEERS"] = execute_command(h, "show bgp neighbors")
-        result["MAC"] = execute_command(h, "show mac address-table count")
-        result["HOSTNAME"] = h
-        results.append(result)
-    return results
 
 def count_macs(data):
     vlan_counts = data["result"][1]["vlanCounts"]
@@ -78,22 +75,49 @@ def count_macs(data):
 
 
 @app.route("/")
-def render():
+def index():
+    png1 = base64.b64encode(render("ipv4Unicast", False)).decode("utf-8")
+    png2 = base64.b64encode(render("l2VpnEvpn", False)).decode("utf-8")
+    png3 = base64.b64encode(render("ipv4Unicast", True)).decode("utf-8")
+
+    html = """
+    <h2>ipv4Unicast</h2>
+    <img src="data:image/png;base64,{{ img1 }}" />
+
+    <hr>
+
+    <h2>l2VpnEvpn</h2>
+    <img src="data:image/png;base64,{{ img2 }}" />
+
+    <hr>
+
+    <h2>Rates</h2>
+    <img src="data:image/png;base64,{{ img3 }}" />
+    """
+
+    return render_template_string(html, img1=png1, img2=png2, img3=png3)
+
+
+def render(afi: str, printBps: bool):
     hosts = get_hosts()
-    infos = get_information(hosts)
     dot = Digraph("bgp_topology", format="png", engine="sfdp")
     dot.attr(rankdir="TB")
     dot.attr("node", shape="box", style="filled", fillcolor="lightgrey")
     dot.graph_attr.update({
-    "sep": "+20",
-    "dpi": "150"
+    "sep": "+10",
+    "dpi": "80"
     })
-    for info in infos:
+    if afi == "ipv4Unicast":
+        dot.node("GRE-ROUTER", label=f"GRE-ROUTER")
+    for h in hosts:
+        try:
+            info = get_information(h)
+        except:
+            continue
         bgp_information = info["BGP"]
         bgp_peer_information = info["BGP_PEERS"]
         mac_information = info["MAC"]
         hostname = info["HOSTNAME"]
-        print(mac_information)
         try:
             router = bgp_information["result"][1]["vrfs"]["default"]
             peers = bgp_peer_information["result"][1]["vrfs"]["default"]["peerList"]
@@ -104,29 +128,34 @@ def render():
         except:
             mac_count = 0
         router_id = router["routerId"]
-
-
         dot.node(router_id, label=f"{hostname}\nASN {router['asn']}\n MAC {mac_count}")
-
-        # Add neighbour nodes and edges
         for peer in peers:
-            if "ipv4Unicast" in peer["afiSafiInfo"]:
-                bgp_type = "ipv4Unicast"
-                
-            elif "l2VpnEvpn" in peer["afiSafiInfo"]:
-                bgp_type = "l2VpnEvpn"
+            try:
+                configured_afis = peer["neighborCapabilities"]["multiprotocolCaps"]
+            except:
+                configured_afis = {}
+            if afi not in configured_afis:
                 continue
-            else:
-                continue
-            state = peer["peerTcpInfo"]["state"]
+            elif afi in peer["afiSafiInfo"]:
+                peer_interface = peer["ifName"]
+                rates = execute_command(hostname, f"show interfaces {peer_interface} counters rates")
+                try:
+                    rateOut = rates["result"][1]["interfaces"][peer_interface]["outBpsRate"]
+                    rateOut = round(rateOut, 0)
+                except:
+                    rateOut = "-"
+            state = peer["state"]
             peer_router_id = peer["routerId"]
-            color = "green" if state == "ESTABLISHED" else "red"
-            dot.edge(router_id, peer_router_id, label=f"{state}", color=color)
+            if "10.255.1.25" in peer_router_id:
+                peer_router_id = "GRE-ROUTER"
+            color = "green" if state == "Established" else "red"
+            if printBps:           
+                dot.edge(router_id, peer_router_id, label=f"{rateOut} B/s", color=color)
+            else:
+                dot.edge(router_id, peer_router_id, label=f"{state}", color=color)
 
-    output_path = "./bgp_graph.png"
-    dot.render(output_path, cleanup=True)
     png = dot.pipe(format="png")
-    return Response(png, mimetype="image/png")
+    return png 
 
 def run():
     app.run(host="127.0.0.1", port=8080)

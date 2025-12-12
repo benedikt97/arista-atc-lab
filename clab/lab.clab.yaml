@@ -42,17 +42,17 @@ topology:
       mgmt-ipv4: 172.22.0.110
     router1:
       kind: linux
-      image: frrouting/frr:latest
+      image: frrouting/frr:configured
       exec:
-        - bash server.sh > server.log
+        - bash server.sh 
       binds:
         - startscripts/router1.sh:/server.sh
         - startscripts/router1.cmd:/router.cmd
     router2:
       kind: linux
-      image: frrouting/frr:latest
+      image: frrouting/frr:configured
       exec:
-        - bash server.sh > server.log
+        - bash server.sh
       binds:
         - startscripts/router2.sh:/server.sh
         - startscripts/router2.cmd:/router.cmd

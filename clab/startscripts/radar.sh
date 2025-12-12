@@ -26,9 +26,8 @@ ip addr add ${BOND_IP} dev ${BOND_NAME}
 socat_loop () {
     while true; do
     echo "This is a radar message" | \
-    socat - UDP4-DATAGRAM:255.255.255.255:5000,bind=192.168.250.250,broadcast
+    socat - UDP4-DATAGRAM:239.4.3.4:9003,ip-multicast-if=192.168.250.250,ip-multicast-ttl=10
     sleep 1
     done
 }
-
 socat_loop &
