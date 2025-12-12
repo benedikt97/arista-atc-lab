@@ -204,7 +204,7 @@ router_bgp:
     description: rz-leaf1-1_Loopback0
   - ip_address: 10.255.1.4
     peer_group: EVPN-OVERLAY-CORE
-    remote_as: '65104'
+    remote_as: '65103'
     peer: rz-leaf1-2
     description: rz-leaf1-2_Loopback0
   - ip_address: 10.250.230.10

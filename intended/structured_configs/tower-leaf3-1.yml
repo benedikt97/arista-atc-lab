@@ -94,14 +94,14 @@ port_channel_interfaces:
       groups:
       - MLAG
 - name: Port-Channel1
-  description: L2_acc-leaf2-1_Port-Channel8
+  description: L2_CENTER-LEAF2_Port-Channel8
   shutdown: false
   mlag: 1
   switchport:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 11-12,219-220,250,3401-3402
+      allowed_vlan: 10-12,219-220,250,3401-3402
 - name: Port-Channel5
   description: SERVER_tower-position1_Bond0
   shutdown: false
@@ -151,6 +151,9 @@ vlans:
   tenant: ATC-FIDJI
 - id: 250
   name: VRFRDR_VLAN250_RDR
+  tenant: ATC-FIDJI
+- id: 10
+  name: VRFEXT_VLAN11_EXT
   tenant: ATC-FIDJI
 - id: 11
   name: VRFEXT_VLAN11_CLIENT

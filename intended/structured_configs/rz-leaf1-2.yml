@@ -214,7 +214,7 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65104'
+  as: '65103'
   router_id: 10.255.1.4
   maximum_paths:
     paths: 4
@@ -225,7 +225,7 @@ router_bgp:
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
-    remote_as: '65104'
+    remote_as: '65103'
     description: rz-leaf1-1
     next_hop_self: true
     send_community: all
@@ -281,12 +281,13 @@ router_bgp:
     description: radar-edge1-1_Loopback0
   - ip_address: 10.255.3.10
     peer_group: EVPN-OVERLAY-CORE
-    remote_as: '65110'
+    remote_as: '65109'
     peer: radar-edge1-2
     description: radar-edge1-2_Loopback0
   - ip_address: 10.250.230.6
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65201'
+    local_as: '65104'
     peer: router
     description: router
   redistribute:
@@ -334,6 +335,20 @@ router_bgp:
       import_export_evpn_domains:
       - domain: remote
         route_target: 10250:10250
+    redistribute_routes:
+    - learned
+  - id: 10
+    tenant: ATC-FIDJI
+    rd: 10.255.1.4:10010
+    rd_evpn_domain:
+      domain: remote
+      rd: 10.255.1.4:10010
+    route_targets:
+      both:
+      - 10010:10010
+      import_export_evpn_domains:
+      - domain: remote
+        route_target: 10010:10010
     redistribute_routes:
     - learned
   - id: 11
@@ -474,6 +489,8 @@ router_bgp:
       connected:
         enabled: true
         route_map: RM-CONN-2-BGP-VRFS
+      static:
+        enabled: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: mstp
@@ -485,6 +502,9 @@ static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
   next_hop: 172.22.0.1
+- vrf: VRFEXT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.10.250
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4093
@@ -541,6 +561,15 @@ vlan_interfaces:
   mtu: 1500
   tenant: ATC-FIDJI
   type: underlay_peering
+- name: Vlan10
+  description: VRFEXT_VLAN11_EXT
+  shutdown: false
+  vrf: VRFEXT
+  ip_address_virtual: 192.168.10.1/24
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:D10::1/48
+  tenant: ATC-FIDJI
 - name: Vlan11
   description: VRFEXT_VLAN11_CLIENT
   shutdown: false
@@ -602,6 +631,9 @@ vlans:
   trunk_groups:
   - MLAG
   tenant: ATC-FIDJI
+- id: 10
+  name: VRFEXT_VLAN11_EXT
+  tenant: ATC-FIDJI
 - id: 11
   name: VRFEXT_VLAN11_CLIENT
   tenant: ATC-FIDJI
@@ -648,6 +680,8 @@ vxlan_interface:
         vni: 10220
       - id: 250
         vni: 10250
+      - id: 10
+        vni: 10010
       - id: 11
         vni: 10011
       - id: 12

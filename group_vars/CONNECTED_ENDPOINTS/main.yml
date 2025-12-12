@@ -54,7 +54,7 @@ servers:
   - name: center-position1
     adapters:
       - endpoint_ports: [ eth1, eth2 ]
-        switch_ports: [ Ethernet3, Ethernet3 ]
+        switch_ports: [ Ethernet5, Ethernet5 ]
         switches: [ acc-leaf2-1, acc-leaf2-2 ]
         profile: CLIENT
         port_channel:

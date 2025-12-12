@@ -12,7 +12,8 @@ l3leaf:
     virtual_router_mac_address: 02:1c:73:00:00:99
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
-    mlag: false
+    mlag_peer_ipv4_pool: 10.255.255.64/27
+    mlag_peer_l3_ipv4_pool: 10.255.255.96/27
     loopback_ipv4_pool: 10.255.1.0/24
     vtep_loopback_ipv4_pool: 10.255.2.0/27
     uplink_ipv4_pool: 10.255.202.0/26
@@ -29,4 +30,4 @@ l3leaf:
           id: 6
           mgmt_ip: 172.22.0.106/24
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
-          bgp_as: 65106
+          bgp_as: 65105

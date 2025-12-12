@@ -56,6 +56,7 @@ def get_information(hosts):
     for h in hosts:
         result = {}
         result["BGP"] = execute_command(h, "show bgp summary")
+        result["BGP_PEERS"] = execute_command(h, "show bgp neighbors")
         result["MAC"] = execute_command(h, "show mac address-table count")
         result["HOSTNAME"] = h
         results.append(result)
@@ -83,14 +84,19 @@ def render():
     dot = Digraph("bgp_topology", format="png", engine="sfdp")
     dot.attr(rankdir="TB")
     dot.attr("node", shape="box", style="filled", fillcolor="lightgrey")
-
+    dot.graph_attr.update({
+    "sep": "+20",
+    "dpi": "150"
+    })
     for info in infos:
         bgp_information = info["BGP"]
+        bgp_peer_information = info["BGP_PEERS"]
         mac_information = info["MAC"]
         hostname = info["HOSTNAME"]
         print(mac_information)
         try:
             router = bgp_information["result"][1]["vrfs"]["default"]
+            peers = bgp_peer_information["result"][1]["vrfs"]["default"]["peerList"]
         except:
             continue
         try:
@@ -98,24 +104,24 @@ def render():
         except:
             mac_count = 0
         router_id = router["routerId"]
-        peers = router["peers"]
 
-#        print(hostname)
-        dot.node(router["asn"], label=f"{hostname}\nASN {router['asn']}\n MAC {mac_count}")
+
+        dot.node(router_id, label=f"{hostname}\nASN {router['asn']}\n MAC {mac_count}")
 
         # Add neighbour nodes and edges
-        for neigh_ip, info in peers.items():
-            if "ipv4Unicast" in info:
+        for peer in peers:
+            if "ipv4Unicast" in peer["afiSafiInfo"]:
                 bgp_type = "ipv4Unicast"
-                continue
-            elif "l2VpnEvpn" in info:
+                
+            elif "l2VpnEvpn" in peer["afiSafiInfo"]:
                 bgp_type = "l2VpnEvpn"
+                continue
             else:
                 continue
-            state = info["peerState"]
-            asn = info["peerAsn"]
-            color = "green" if state == "Established" else "red"
-            dot.edge(router["asn"], asn, label=f"{state}", color=color)
+            state = peer["peerTcpInfo"]["state"]
+            peer_router_id = peer["routerId"]
+            color = "green" if state == "ESTABLISHED" else "red"
+            dot.edge(router_id, peer_router_id, label=f"{state}", color=color)
 
     output_path = "./bgp_graph.png"
     dot.render(output_path, cleanup=True)

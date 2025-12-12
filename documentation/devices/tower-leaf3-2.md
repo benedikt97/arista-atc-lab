@@ -180,6 +180,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 10 | VRFEXT_VLAN11_EXT | - |
 | 11 | VRFEXT_VLAN11_CLIENT | - |
 | 12 | VRF10_VLAN12_SERVER | - |
 | 219 | VRFRDR_VLAN219_REC | - |
@@ -192,6 +193,9 @@ vlan internal order ascending range 1006 1199
 ### VLANs Device Configuration
 
 ```eos
+!
+vlan 10
+   name VRFEXT_VLAN11_EXT
 !
 vlan 11
    name VRFEXT_VLAN11_CLIENT

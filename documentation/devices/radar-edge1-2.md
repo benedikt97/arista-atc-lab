@@ -562,7 +562,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65110 | 10.255.3.10 |
+| 65109 | 10.255.3.10 |
 
 | BGP Tuning |
 | ---------- |
@@ -607,7 +607,7 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65110 |
+| Remote AS | 65109 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -618,7 +618,7 @@ ASN Notation: asplain
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 10.250.230.14 | 65202 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.1.3 | 65103 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
-| 10.255.1.4 | 65104 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
+| 10.255.1.4 | 65103 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
 | 10.255.255.112 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 10.255.255.112 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF-CAM | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 10.255.255.112 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF-RDR | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
@@ -659,7 +659,7 @@ ASN Notation: asplain
 
 ```eos
 !
-router bgp 65110
+router bgp 65109
    router-id 10.255.3.10
    update wait-install
    no bgp default ipv4-unicast
@@ -680,7 +680,7 @@ router bgp 65110
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65110
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65109
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER description radar-edge1-1
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
@@ -688,12 +688,13 @@ router bgp 65110
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor 10.250.230.14 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.250.230.14 remote-as 65202
+   neighbor 10.250.230.14 local-as 65110 no-prepend replace-as
    neighbor 10.250.230.14 description router
    neighbor 10.255.1.3 peer group EVPN-OVERLAY-CORE
    neighbor 10.255.1.3 remote-as 65103
    neighbor 10.255.1.3 description rz-leaf1-1_Loopback0
    neighbor 10.255.1.4 peer group EVPN-OVERLAY-CORE
-   neighbor 10.255.1.4 remote-as 65104
+   neighbor 10.255.1.4 remote-as 65103
    neighbor 10.255.1.4 description rz-leaf1-2_Loopback0
    neighbor 10.255.255.112 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 10.255.255.112 description radar-edge1-1_Vlan4093

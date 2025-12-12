@@ -45,20 +45,20 @@ l3leaf:
                 bgp_as: 65103
               - hostname: rz-leaf1-2
                 ip_address: 10.255.1.4
-                bgp_as: 65104
+                bgp_as: 65103
 
 
 
         - name: radar-edge1-2
           id: 10
           mgmt_ip: 172.22.0.110/24
-          bgp_as: 65110
+          bgp_as: 65109
           uplink_ipv6_pool: 2001:DB8:B6::/48
           evpn_gateway:
             remote_peers:
               - hostname: rz-leaf1-2
                 ip_address: 10.255.1.4
-                bgp_as: 65104
+                bgp_as: 65103
               - hostname: rz-leaf1-1
                 ip_address: 10.255.1.3
                 bgp_as: 65103

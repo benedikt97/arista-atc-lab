@@ -21,11 +21,11 @@ ip address 10.250.231.1/30
 exit
 !
 interface lo0
- ip address 10.255.1.255/32
+ ip address 10.255.1.254/32
 exit
 !
 router bgp 65201
- bgp router-id 10.255.1.255
+ bgp router-id 10.255.1.254
  neighbor ARISTAS peer-group
  neighbor 10.250.231.2 remote-as 65202
  neighbor 10.250.231.2 peer-group ARISTAS

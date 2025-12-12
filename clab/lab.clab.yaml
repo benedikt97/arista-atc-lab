@@ -133,6 +133,8 @@ topology:
     - endpoints: ["rz-spine2:eth4", "acc-leaf2-2:eth2"]
 
     - endpoints: ["acc-leaf2-1:eth8", "tower-leaf3-1:eth1"]
+    - endpoints: ["acc-leaf2-1:eth3", "acc-leaf2-2:eth3"]
+    - endpoints: ["acc-leaf2-1:eth4", "acc-leaf2-2:eth4"]
 
     - endpoints: ["tower-leaf3-1:eth3", "tower-leaf3-2:eth3"]
     - endpoints: ["tower-leaf3-1:eth4", "tower-leaf3-2:eth4"]
@@ -152,8 +154,8 @@ topology:
     - endpoints: ["rec-server:eth1", "rz-leaf1-1:eth7"]
     - endpoints: ["rec-server:eth2", "rz-leaf1-2:eth7"]
 
-    - endpoints: ["center-position1:eth1", "acc-leaf2-1:eth3"]
-    - endpoints: ["center-position1:eth2", "acc-leaf2-2:eth3"]
+    - endpoints: ["center-position1:eth1", "acc-leaf2-1:eth5"]
+    - endpoints: ["center-position1:eth2", "acc-leaf2-2:eth5"]
     - endpoints: ["tower-position1:eth1", "tower-leaf3-1:eth5"]
     - endpoints: ["tower-position1:eth2", "tower-leaf3-2:eth5"]
     - endpoints: ["tower-cam1:eth1", "tower-leaf3-2:eth6"]

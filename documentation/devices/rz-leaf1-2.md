@@ -189,6 +189,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 10 | VRFEXT_VLAN11_EXT | - |
 | 11 | VRFEXT_VLAN11_CLIENT | - |
 | 12 | VRF10_VLAN12_SERVER | - |
 | 219 | VRFRDR_VLAN219_REC | - |
@@ -205,6 +206,9 @@ vlan internal order ascending range 1006 1199
 ### VLANs Device Configuration
 
 ```eos
+!
+vlan 10
+   name VRFEXT_VLAN11_EXT
 !
 vlan 11
    name VRFEXT_VLAN11_CLIENT
@@ -441,6 +445,7 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan10 | VRFEXT_VLAN11_EXT | VRFEXT | - | False |
 | Vlan11 | VRFEXT_VLAN11_CLIENT | VRFEXT | - | False |
 | Vlan12 | VRF10_VLAN12_SERVER | VRFEXT | - | False |
 | Vlan219 | VRFRDR_VLAN219_REC | VRF-CAM | - | False |
@@ -456,6 +461,7 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan10 |  VRFEXT  |  -  |  192.168.10.1/24  |  -  |  -  |  -  |
 | Vlan11 |  VRFEXT  |  -  |  192.168.11.1/24  |  -  |  -  |  -  |
 | Vlan12 |  VRFEXT  |  -  |  192.168.12.1/24  |  -  |  -  |  -  |
 | Vlan219 |  VRF-CAM  |  -  |  192.168.219.1/24  |  -  |  -  |  -  |
@@ -471,6 +477,7 @@ interface Loopback1
 
 | Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
+| Vlan10 | VRFEXT | - | 2001:DB8:D10::1/48 | - | - | - | - | - | - |
 | Vlan11 | VRFEXT | - | 2001:DB8:D11::1/48 | - | - | - | - | - | - |
 | Vlan12 | VRFEXT | - | 2001:DB8:D12::1/48 | - | - | - | - | - | - |
 | Vlan219 | VRF-CAM | - | 2001:DB8:D219::1/48 | - | - | - | - | - | - |
@@ -480,6 +487,14 @@ interface Loopback1
 #### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan10
+   description VRFEXT_VLAN11_EXT
+   no shutdown
+   vrf VRFEXT
+   ipv6 enable
+   ip address virtual 192.168.10.1/24
+   ipv6 address virtual 2001:DB8:D10::1/48
 !
 interface Vlan11
    description VRFEXT_VLAN11_CLIENT
@@ -570,6 +585,7 @@ interface Vlan4094
 
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
+| 10 | 10010 | - | - |
 | 11 | 10011 | - | - |
 | 12 | 10012 | - | - |
 | 219 | 10219 | - | - |
@@ -595,6 +611,7 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
+   vxlan vlan 10 vni 10010
    vxlan vlan 11 vni 10011
    vxlan vlan 12 vni 10012
    vxlan vlan 219 vni 10219
@@ -673,12 +690,14 @@ ip routing vrf VRFEXT
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 172.22.0.1 | - | 1 | - | - | - |
+| VRFEXT | 0.0.0.0/0 | 192.168.10.250 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 172.22.0.1
+ip route vrf VRFEXT 0.0.0.0/0 192.168.10.250
 ```
 
 ### Router BGP
@@ -689,7 +708,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65104 | 10.255.1.4 |
+| 65103 | 10.255.1.4 |
 
 | BGP Tuning |
 | ---------- |
@@ -733,7 +752,7 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65104 |
+| Remote AS | 65103 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -746,7 +765,7 @@ ASN Notation: asplain
 | 10.255.1.1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 10.255.1.2 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 10.255.3.9 | 65109 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
-| 10.255.3.10 | 65110 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
+| 10.255.3.10 | 65109 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
 | 10.255.201.12 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.201.14 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.255.100 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
@@ -775,6 +794,7 @@ ASN Notation: asplain
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
+| 10 | 10.255.1.4:10010 | 10010:10010<br>remote 10010:10010 | - | - | learned |
 | 11 | 10.255.1.4:10011 | 10011:10011<br>remote 10011:10011 | - | - | learned |
 | 12 | 10.255.1.4:10012 | 10012:10012<br>remote 10012:10012 | - | - | learned |
 | 219 | 10.255.1.4:10219 | 10219:10219<br>remote 10219:10219 | - | - | learned |
@@ -789,13 +809,13 @@ ASN Notation: asplain
 | --- | ------------------- | ------------ | ---------------- |
 | VRF-CAM | 10.255.1.4:12 | connected | - |
 | VRF-RDR | 10.255.1.4:11 | connected | - |
-| VRFEXT | 10.255.1.4:10 | connected | - |
+| VRFEXT | 10.255.1.4:10 | connected<br>static | - |
 
 #### Router BGP Device Configuration
 
 ```eos
 !
-router bgp 65104
+router bgp 65103
    router-id 10.255.1.4
    no bgp default ipv4-unicast
    maximum-paths 4 ecmp 4
@@ -815,7 +835,7 @@ router bgp 65104
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65104
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65103
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER description rz-leaf1-1
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
@@ -823,6 +843,7 @@ router bgp 65104
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor 10.250.230.6 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.250.230.6 remote-as 65201
+   neighbor 10.250.230.6 local-as 65104 no-prepend replace-as
    neighbor 10.250.230.6 description router
    neighbor 10.255.1.1 peer group EVPN-OVERLAY-PEERS
    neighbor 10.255.1.1 remote-as 65101
@@ -834,7 +855,7 @@ router bgp 65104
    neighbor 10.255.3.9 remote-as 65109
    neighbor 10.255.3.9 description radar-edge1-1_Loopback0
    neighbor 10.255.3.10 peer group EVPN-OVERLAY-CORE
-   neighbor 10.255.3.10 remote-as 65110
+   neighbor 10.255.3.10 remote-as 65109
    neighbor 10.255.3.10 description radar-edge1-2_Loopback0
    neighbor 10.255.201.12 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.201.12 remote-as 65101
@@ -845,6 +866,13 @@ router bgp 65104
    neighbor 10.255.255.100 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 10.255.255.100 description rz-leaf1-1_Vlan4093
    redistribute connected route-map RM-CONN-2-BGP
+   !
+   vlan 10
+      rd 10.255.1.4:10010
+      rd evpn domain remote 10.255.1.4:10010
+      route-target both 10010:10010
+      route-target import export evpn domain remote 10010:10010
+      redistribute learned
    !
    vlan 11
       rd 10.255.1.4:10011
@@ -933,6 +961,7 @@ router bgp 65104
       neighbor 10.255.255.100 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.255.100 description rz-leaf1-1_Vlan3009
       redistribute connected route-map RM-CONN-2-BGP-VRFS
+      redistribute static
 ```
 
 ## BFD

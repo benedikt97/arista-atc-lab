@@ -180,6 +180,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 10 | VRFEXT_VLAN11_EXT | - |
 | 11 | VRFEXT_VLAN11_CLIENT | - |
 | 12 | VRF10_VLAN12_SERVER | - |
 | 219 | VRFRDR_VLAN219_REC | - |
@@ -192,6 +193,9 @@ vlan internal order ascending range 1006 1199
 ### VLANs Device Configuration
 
 ```eos
+!
+vlan 10
+   name VRFEXT_VLAN11_EXT
 !
 vlan 11
    name VRFEXT_VLAN11_CLIENT
@@ -229,7 +233,7 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | L2_acc-leaf2-1_Ethernet8 | *trunk | *11-12,219-220,250,3401-3402 | *- | *- | 1 |
+| Ethernet1 | L2_acc-leaf2-1_Ethernet8 | *trunk | *10-12,219-220,250,3401-3402 | *- | *- | 1 |
 | Ethernet3 | MLAG_tower-leaf3-2_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet4 | MLAG_tower-leaf3-2_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet5 | SERVER_tower-position1_eth1 | *trunk | *11,3401-3402 | *11 | *- | 5 |
@@ -278,7 +282,7 @@ interface Ethernet6
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | L2_acc-leaf2-1_Port-Channel8 | trunk | 11-12,219-220,250,3401-3402 | - | - | - | - | 1 | - |
+| Port-Channel1 | L2_CENTER-LEAF2_Port-Channel8 | trunk | 10-12,219-220,250,3401-3402 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_tower-leaf3-2_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel5 | SERVER_tower-position1_Bond0 | trunk | 11,3401-3402 | 11 | - | - | - | 5 | - |
 
@@ -287,9 +291,9 @@ interface Ethernet6
 ```eos
 !
 interface Port-Channel1
-   description L2_acc-leaf2-1_Port-Channel8
+   description L2_CENTER-LEAF2_Port-Channel8
    no shutdown
-   switchport trunk allowed vlan 11-12,219-220,250,3401-3402
+   switchport trunk allowed vlan 10-12,219-220,250,3401-3402
    switchport mode trunk
    switchport
    mlag 1

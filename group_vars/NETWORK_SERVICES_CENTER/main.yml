@@ -5,7 +5,15 @@ tenants:
     vrfs:
       - name: VRFEXT
         vrf_vni: 10
+        static_routes:
+          - next_hop: 192.168.10.250
+            prefix: 0.0.0.0/0
         svis:
+          - id: 10
+            name: VRFEXT_VLAN11_EXT
+            enabled: true
+            ip_address_virtual: 192.168.10.1/24
+            ipv6_address_virtuals: [2001:DB8:D10::1/48]
           - id: 11
             name: VRFEXT_VLAN11_CLIENT
             enabled: true

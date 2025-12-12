@@ -312,13 +312,13 @@ ASN Notation: asplain
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 10.255.1.3 | 65103 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.1.4 | 65104 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.255.1.4 | 65103 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 10.255.1.5 | 65105 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 10.255.1.6 | 65106 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.255.1.6 | 65105 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 10.255.201.9 | 65103 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 10.255.201.13 | 65104 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 10.255.201.13 | 65103 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.202.17 | 65105 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 10.255.202.21 | 65106 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 10.255.202.21 | 65105 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -351,25 +351,25 @@ router bgp 65101
    neighbor 10.255.1.3 remote-as 65103
    neighbor 10.255.1.3 description rz-leaf1-1_Loopback0
    neighbor 10.255.1.4 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.255.1.4 remote-as 65104
+   neighbor 10.255.1.4 remote-as 65103
    neighbor 10.255.1.4 description rz-leaf1-2_Loopback0
    neighbor 10.255.1.5 peer group EVPN-OVERLAY-PEERS
    neighbor 10.255.1.5 remote-as 65105
    neighbor 10.255.1.5 description acc-leaf2-1_Loopback0
    neighbor 10.255.1.6 peer group EVPN-OVERLAY-PEERS
-   neighbor 10.255.1.6 remote-as 65106
+   neighbor 10.255.1.6 remote-as 65105
    neighbor 10.255.1.6 description acc-leaf2-2_Loopback0
    neighbor 10.255.201.9 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.201.9 remote-as 65103
    neighbor 10.255.201.9 description rz-leaf1-1_Ethernet1
    neighbor 10.255.201.13 peer group IPv4-UNDERLAY-PEERS
-   neighbor 10.255.201.13 remote-as 65104
+   neighbor 10.255.201.13 remote-as 65103
    neighbor 10.255.201.13 description rz-leaf1-2_Ethernet1
    neighbor 10.255.202.17 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.202.17 remote-as 65105
    neighbor 10.255.202.17 description acc-leaf2-1_Ethernet1
    neighbor 10.255.202.21 peer group IPv4-UNDERLAY-PEERS
-   neighbor 10.255.202.21 remote-as 65106
+   neighbor 10.255.202.21 remote-as 65105
    neighbor 10.255.202.21 description acc-leaf2-2_Ethernet1
    redistribute connected route-map RM-CONN-2-BGP
    !

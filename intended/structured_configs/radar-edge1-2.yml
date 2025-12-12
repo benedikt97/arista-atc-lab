@@ -143,7 +143,7 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65110'
+  as: '65109'
   router_id: 10.255.3.10
   maximum_paths:
     paths: 4
@@ -156,7 +156,7 @@ router_bgp:
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
-    remote_as: '65110'
+    remote_as: '65109'
     description: radar-edge1-1
     next_hop_self: true
     send_community: all
@@ -192,12 +192,13 @@ router_bgp:
     description: rz-leaf1-1_Loopback0
   - ip_address: 10.255.1.4
     peer_group: EVPN-OVERLAY-CORE
-    remote_as: '65104'
+    remote_as: '65103'
     peer: rz-leaf1-2
     description: rz-leaf1-2_Loopback0
   - ip_address: 10.250.230.14
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65202'
+    local_as: '65110'
     peer: router
     description: router
   redistribute:

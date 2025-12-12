@@ -134,6 +134,9 @@ vlans:
 - id: 250
   name: VRFRDR_VLAN250_RDR
   tenant: ATC-FIDJI
+- id: 10
+  name: VRFEXT_VLAN11_EXT
+  tenant: ATC-FIDJI
 - id: 11
   name: VRFEXT_VLAN11_CLIENT
   tenant: ATC-FIDJI

@@ -41,6 +41,8 @@
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
 | l3leaf | acc-leaf2-1 | Ethernet1 | spine | rz-spine1 | Ethernet3 |
 | l3leaf | acc-leaf2-1 | Ethernet2 | spine | rz-spine2 | Ethernet3 |
+| l3leaf | acc-leaf2-1 | Ethernet3 | mlag_peer | acc-leaf2-2 | Ethernet3 |
+| l3leaf | acc-leaf2-1 | Ethernet4 | mlag_peer | acc-leaf2-2 | Ethernet4 |
 | l3leaf | acc-leaf2-1 | Ethernet8 | l2leaf | tower-leaf3-1 | Ethernet1 |
 | l3leaf | acc-leaf2-2 | Ethernet1 | spine | rz-spine1 | Ethernet4 |
 | l3leaf | acc-leaf2-2 | Ethernet2 | spine | rz-spine2 | Ethernet4 |
@@ -110,7 +112,7 @@
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
 | FABRIC | acc-leaf2-1 | 10.255.2.5/32 |
-| FABRIC | acc-leaf2-2 | 10.255.2.6/32 |
+| FABRIC | acc-leaf2-2 | 10.255.2.5/32 |
 | FABRIC | radar-edge1-1 | 10.255.4.9/32 |
 | FABRIC | radar-edge1-2 | 10.255.4.9/32 |
 | FABRIC | rz-leaf1-1 | 10.255.2.3/32 |
