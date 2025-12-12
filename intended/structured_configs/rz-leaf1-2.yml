@@ -274,6 +274,11 @@ router_bgp:
     remote_as: '65102'
     peer: rz-spine2
     description: rz-spine2_Loopback0
+  - ip_address: 10.255.3.9
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65109'
+    peer: radar-edge1-1
+    description: radar-edge1-1_Loopback0
   - ip_address: 10.255.3.10
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65110'

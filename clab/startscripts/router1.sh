@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 sleep 5
 /usr/lib/frr/bgpd -d
 /usr/lib/frr/nhrpd -d

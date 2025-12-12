@@ -745,6 +745,7 @@ ASN Notation: asplain
 | 10.250.230.6 | 65201 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.1.1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 10.255.1.2 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 10.255.3.9 | 65109 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
 | 10.255.3.10 | 65110 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
 | 10.255.201.12 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.201.14 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
@@ -829,6 +830,9 @@ router bgp 65104
    neighbor 10.255.1.2 peer group EVPN-OVERLAY-PEERS
    neighbor 10.255.1.2 remote-as 65102
    neighbor 10.255.1.2 description rz-spine2_Loopback0
+   neighbor 10.255.3.9 peer group EVPN-OVERLAY-CORE
+   neighbor 10.255.3.9 remote-as 65109
+   neighbor 10.255.3.9 description radar-edge1-1_Loopback0
    neighbor 10.255.3.10 peer group EVPN-OVERLAY-CORE
    neighbor 10.255.3.10 remote-as 65110
    neighbor 10.255.3.10 description radar-edge1-2_Loopback0

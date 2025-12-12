@@ -617,6 +617,7 @@ ASN Notation: asplain
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 10.250.230.14 | 65202 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 10.255.1.3 | 65103 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
 | 10.255.1.4 | 65104 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
 | 10.255.255.112 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 10.255.255.112 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF-CAM | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
@@ -688,6 +689,9 @@ router bgp 65110
    neighbor 10.250.230.14 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.250.230.14 remote-as 65202
    neighbor 10.250.230.14 description router
+   neighbor 10.255.1.3 peer group EVPN-OVERLAY-CORE
+   neighbor 10.255.1.3 remote-as 65103
+   neighbor 10.255.1.3 description rz-leaf1-1_Loopback0
    neighbor 10.255.1.4 peer group EVPN-OVERLAY-CORE
    neighbor 10.255.1.4 remote-as 65104
    neighbor 10.255.1.4 description rz-leaf1-2_Loopback0

@@ -44,7 +44,7 @@ topology:
       kind: linux
       image: frrouting/frr:latest
       exec:
-        - bash server.sh
+        - bash server.sh > server.log
       binds:
         - startscripts/router1.sh:/server.sh
         - startscripts/router1.cmd:/router.cmd
@@ -52,7 +52,7 @@ topology:
       kind: linux
       image: frrouting/frr:latest
       exec:
-        - bash server.sh
+        - bash server.sh > server.log
       binds:
         - startscripts/router2.sh:/server.sh
         - startscripts/router2.cmd:/router.cmd

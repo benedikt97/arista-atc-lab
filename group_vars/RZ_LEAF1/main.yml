@@ -38,6 +38,10 @@ l3leaf:
               - hostname: radar-edge1-1
                 ip_address: 10.255.3.9
                 bgp_as: 65109
+              - hostname: radar-edge1-2
+                ip_address: 10.255.3.10
+                bgp_as: 65110
+
         - name: rz-leaf1-2
           id: 4
           bgp_as: 65104
@@ -48,6 +52,9 @@ l3leaf:
               - hostname: radar-edge1-2
                 ip_address: 10.255.3.10
                 bgp_as: 65110
+              - hostname: radar-edge1-1
+                ip_address: 10.255.3.9
+                bgp_as: 65109
 
 l3_edge:
   p2p_links:

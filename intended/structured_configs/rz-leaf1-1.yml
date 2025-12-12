@@ -280,6 +280,11 @@ router_bgp:
     remote_as: '65109'
     peer: radar-edge1-1
     description: radar-edge1-1_Loopback0
+  - ip_address: 10.255.3.10
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65110'
+    peer: radar-edge1-2
+    description: radar-edge1-2_Loopback0
   - ip_address: 10.250.230.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65201'

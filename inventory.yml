@@ -10,7 +10,7 @@ all:
               hosts:
                 rz-spine1:
                 rz-spine2:
-            RZ_SDF_LEAF1:
+            RZ_LEAF1:
               hosts:
                 rz-leaf1-1:
                 rz-leaf1-2:
@@ -32,12 +32,12 @@ all:
         RADAR_EDGE1:
     NETWORK_SERVICES_CENTER:
       children:
-        RZ_SDF_LEAF1:
+        RZ_LEAF1:
         CENTER_LEAF2:
         TOWER_LEAF3:
     CONNECTED_ENDPOINTS:
       children:
-        RZ_SDF_LEAF1:
+        RZ_LEAF1:
         CENTER_LEAF2:
         TOWER_LEAF3:
         RADAR_EDGE1:
