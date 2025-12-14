@@ -108,10 +108,7 @@ port_channel_interfaces:
 - name: Port-Channel6
   description: SERVER_radar_Bond0
   shutdown: false
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0002:0001:0001
-    route_target: 00:02:00:01:00:01
-  lacp_id: 0002.0001.0001
+  mlag: 6
   switchport:
     enabled: true
     mode: access

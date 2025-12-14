@@ -24,8 +24,8 @@ servers:
         port_channel:
           endpoint_port_channel: Bond0
           mode: active
-        ethernet_segment:
-          short_esi: 0001:0001:0001
+#        ethernet_segment:
+#          short_esi: 0001:0001:0001
   - name: sdf-server2
     adapters:
       - endpoint_ports: [ eth1, eth2 ]
@@ -35,8 +35,8 @@ servers:
         port_channel:
           endpoint_port_channel: Bond0
           mode: active
-        ethernet_segment:
-          short_esi: 0001:0001:0002
+#        ethernet_segment:
+#          short_esi: 0001:0001:0002
   - name: rec-server
     adapters:
       - endpoint_ports: [ eth1, eth2 ]
@@ -49,8 +49,8 @@ servers:
         port_channel:
           endpoint_port_channel: Bond0
           mode: active
-        ethernet_segment:
-          short_esi: 0001:0001:0003
+#        ethernet_segment:
+#          short_esi: 0001:0001:0003
   - name: center-position1
     adapters:
       - endpoint_ports: [ eth1, eth2 ]
@@ -60,8 +60,8 @@ servers:
         port_channel:
           endpoint_port_channel: Bond0
           mode: active
-        ethernet_segment:
-          short_esi: 0001:0002:0001
+#        ethernet_segment:
+#          short_esi: 0001:0002:0001
   - name: tower-position1
     adapters:
       - endpoint_ports: [ eth1, eth2 ]
@@ -71,8 +71,8 @@ servers:
         port_channel:
           endpoint_port_channel: Bond0
           mode: active
-        ethernet_segment:
-          short_esi: 0001:0003:0001
+#        ethernet_segment:
+#          short_esi: 0001:0003:0001
   - name: tower-cam1
     adapters:
       - endpoint_ports: [ eth1 ]
@@ -107,8 +107,8 @@ servers:
         port_channel:
           endpoint_port_channel: Bond0
           mode: active
-        ethernet_segment:
-          short_esi: 0002:0001:0001
+ #       ethernet_segment:
+#          short_esi: 0002:0001:0001
 
   # - name: dc1-leaf2-server1
   #   adapters:

@@ -285,15 +285,7 @@ interface Ethernet6
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_radar-edge1-1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
-| Port-Channel6 | SERVER_radar_Bond0 | access | 250 | - | - | - | - | - | 0000:0000:0002:0001:0001 |
-
-##### EVPN Multihoming
-
-####### EVPN Multihoming Summary
-
-| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
-| --------- | --------------------------- | --------------------------- | ------------ |
-| Port-Channel6 | 0000:0000:0002:0001:0001 | all-active | 00:02:00:01:00:01 |
+| Port-Channel6 | SERVER_radar_Bond0 | access | 250 | - | - | - | - | 6 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -312,11 +304,7 @@ interface Port-Channel6
    switchport access vlan 250
    switchport mode access
    switchport
-   !
-   evpn ethernet-segment
-      identifier 0000:0000:0002:0001:0001
-      route-target import 00:02:00:01:00:01
-   lacp system-id 0002.0001.0001
+   mlag 6
 ```
 
 ### Loopback Interfaces

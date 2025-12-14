@@ -136,10 +136,7 @@ port_channel_interfaces:
 - name: Port-Channel5
   description: SERVER_sdf-server1_Bond0
   shutdown: false
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0001:0001:0001
-    route_target: 00:01:00:01:00:01
-  lacp_id: 0001.0001.0001
+  mlag: 5
   spanning_tree_portfast: edge
   switchport:
     enabled: true
@@ -150,10 +147,7 @@ port_channel_interfaces:
 - name: Port-Channel6
   description: SERVER_sdf-server2_Bond0
   shutdown: false
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0001:0001:0002
-    route_target: 00:01:00:01:00:02
-  lacp_id: 0001.0001.0002
+  mlag: 6
   spanning_tree_portfast: edge
   switchport:
     enabled: true
@@ -164,10 +158,7 @@ port_channel_interfaces:
 - name: Port-Channel7
   description: SERVER_rec-server_Bond0
   shutdown: false
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0001:0001:0003
-    route_target: 00:01:00:01:00:03
-  lacp_id: 0001.0001.0003
+  mlag: 7
   spanning_tree_portfast: edge
   switchport:
     enabled: true

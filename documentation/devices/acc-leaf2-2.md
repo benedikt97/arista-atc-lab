@@ -318,15 +318,7 @@ interface Ethernet5
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_acc-leaf2-1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
-| Port-Channel5 | SERVER_center-position1_Bond0 | trunk | 11,3401-3402 | 11 | - | - | - | - | 0000:0000:0001:0002:0001 |
-
-##### EVPN Multihoming
-
-####### EVPN Multihoming Summary
-
-| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
-| --------- | --------------------------- | --------------------------- | ------------ |
-| Port-Channel5 | 0000:0000:0001:0002:0001 | all-active | 00:01:00:02:00:01 |
+| Port-Channel5 | SERVER_center-position1_Bond0 | trunk | 11,3401-3402 | 11 | - | - | - | 5 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -346,11 +338,7 @@ interface Port-Channel5
    switchport trunk allowed vlan 11,3401,3402
    switchport mode trunk
    switchport
-   !
-   evpn ethernet-segment
-      identifier 0000:0000:0001:0002:0001
-      route-target import 00:01:00:02:00:01
-   lacp system-id 0001.0002.0001
+   mlag 5
    spanning-tree portfast
 ```
 

@@ -124,10 +124,7 @@ port_channel_interfaces:
 - name: Port-Channel5
   description: SERVER_center-position1_Bond0
   shutdown: false
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0001:0002:0001
-    route_target: 00:01:00:02:00:01
-  lacp_id: 0001.0002.0001
+  mlag: 5
   spanning_tree_portfast: edge
   switchport:
     enabled: true

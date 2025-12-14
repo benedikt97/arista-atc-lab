@@ -345,19 +345,9 @@ interface Ethernet8
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_rz-leaf1-2_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
-| Port-Channel5 | SERVER_sdf-server1_Bond0 | trunk | 12,250,3401-3402 | 12 | - | - | - | - | 0000:0000:0001:0001:0001 |
-| Port-Channel6 | SERVER_sdf-server2_Bond0 | trunk | 12,250,3401-3402 | 12 | - | - | - | - | 0000:0000:0001:0001:0002 |
-| Port-Channel7 | SERVER_rec-server_Bond0 | trunk | 12,219 | 12 | - | - | - | - | 0000:0000:0001:0001:0003 |
-
-##### EVPN Multihoming
-
-####### EVPN Multihoming Summary
-
-| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
-| --------- | --------------------------- | --------------------------- | ------------ |
-| Port-Channel5 | 0000:0000:0001:0001:0001 | all-active | 00:01:00:01:00:01 |
-| Port-Channel6 | 0000:0000:0001:0001:0002 | all-active | 00:01:00:01:00:02 |
-| Port-Channel7 | 0000:0000:0001:0001:0003 | all-active | 00:01:00:01:00:03 |
+| Port-Channel5 | SERVER_sdf-server1_Bond0 | trunk | 12,250,3401-3402 | 12 | - | - | - | 5 | - |
+| Port-Channel6 | SERVER_sdf-server2_Bond0 | trunk | 12,250,3401-3402 | 12 | - | - | - | 6 | - |
+| Port-Channel7 | SERVER_rec-server_Bond0 | trunk | 12,219 | 12 | - | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -377,11 +367,7 @@ interface Port-Channel5
    switchport trunk allowed vlan 12,250,3401,3402
    switchport mode trunk
    switchport
-   !
-   evpn ethernet-segment
-      identifier 0000:0000:0001:0001:0001
-      route-target import 00:01:00:01:00:01
-   lacp system-id 0001.0001.0001
+   mlag 5
    spanning-tree portfast
 !
 interface Port-Channel6
@@ -391,11 +377,7 @@ interface Port-Channel6
    switchport trunk allowed vlan 12,250,3401,3402
    switchport mode trunk
    switchport
-   !
-   evpn ethernet-segment
-      identifier 0000:0000:0001:0001:0002
-      route-target import 00:01:00:01:00:02
-   lacp system-id 0001.0001.0002
+   mlag 6
    spanning-tree portfast
 !
 interface Port-Channel7
@@ -405,11 +387,7 @@ interface Port-Channel7
    switchport trunk allowed vlan 12,219
    switchport mode trunk
    switchport
-   !
-   evpn ethernet-segment
-      identifier 0000:0000:0001:0001:0003
-      route-target import 00:01:00:01:00:03
-   lacp system-id 0001.0001.0003
+   mlag 7
    spanning-tree portfast
 ```
 
