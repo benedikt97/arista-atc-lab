@@ -66,4 +66,6 @@ commands_list:
   - show ip interface brief
   - show interfaces description
   - show version
-  - show running-config
+  - show bgp neighbors
+  - show mlag
+  - show mlag interfaces
