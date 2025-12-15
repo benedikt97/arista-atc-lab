@@ -1,0 +1,10 @@
+---
+- name: validate states on EOS devices using ANTA
+  hosts: FABRIC
+  gather_facts: false
+  tasks:
+    - name: validate states on EOS devices
+      ansible.builtin.import_role:
+        name: arista.avd.anta_runner
+      vars:
+        save_catalog: true
