@@ -141,6 +141,7 @@ def render(afi: str, printBps: bool):
                 rates = execute_command(hostname, f"show interfaces {peer_interface} counters rates")
                 try:
                     rateOut = rates["result"][1]["interfaces"][peer_interface]["outBpsRate"]
+                    rateOut = rateOut / 1000
                     rateOut = round(rateOut, 0)
                 except:
                     rateOut = "-"
@@ -149,8 +150,20 @@ def render(afi: str, printBps: bool):
             if "10.255.1.25" in peer_router_id:
                 peer_router_id = "GRE-ROUTER"
             color = "green" if state == "Established" else "red"
-            if printBps:           
-                dot.edge(router_id, peer_router_id, label=f"{rateOut} B/s", color=color)
+            if printBps:
+                try:
+                    match float(rateOut):
+                        case x if x < 1:
+                            color = "blue"
+                        case x if x < 10:
+                            color = "green"
+                        case x if x < 500:
+                            color = "orange"
+                        case x if x > 500:
+                            color = "red"
+                except:
+                    color = "grey"
+                dot.edge(router_id, peer_router_id, label=f"{rateOut} kB/s", color=color)
             else:
                 dot.edge(router_id, peer_router_id, label=f"{state}", color=color)
 
