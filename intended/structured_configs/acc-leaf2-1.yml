@@ -247,14 +247,6 @@ router_bgp:
       - 10220:10220
     redistribute_routes:
     - learned
-  - id: 250
-    tenant: ATC-FIDJI
-    rd: 10.255.1.5:10250
-    route_targets:
-      both:
-      - 10250:10250
-    redistribute_routes:
-    - learned
   - id: 10
     tenant: ATC-FIDJI
     rd: 10.255.1.5:10010
@@ -277,6 +269,14 @@ router_bgp:
     route_targets:
       both:
       - 10012:10012
+    redistribute_routes:
+    - learned
+  - id: 250
+    tenant: ATC-FIDJI
+    rd: 10.255.1.5:10250
+    route_targets:
+      both:
+      - 10250:10250
     redistribute_routes:
     - learned
   - id: 3401
@@ -330,29 +330,7 @@ router_bgp:
       connected:
         enabled: true
         route_map: RM-CONN-2-BGP-VRFS
-  - name: VRF-RDR
-    rd: 10.255.1.5:11
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '11:11'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '11:11'
-    router_id: 10.255.1.5
-    updates:
-      wait_install: true
-    neighbors:
-    - ip_address: 10.255.255.105
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: acc-leaf2-2_Vlan3010
-    redistribute:
-      connected:
-        enabled: true
-        route_map: RM-CONN-2-BGP-VRFS
-  - name: VRFEXT
+  - name: VRF-EXT
     rd: 10.255.1.5:10
     route_targets:
       import:
@@ -376,6 +354,28 @@ router_bgp:
         route_map: RM-CONN-2-BGP-VRFS
       static:
         enabled: true
+  - name: VRF-RDR
+    rd: 10.255.1.5:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    router_id: 10.255.1.5
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: 10.255.255.105
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: acc-leaf2-2_Vlan3010
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: mstp
@@ -387,7 +387,7 @@ static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
   next_hop: 172.22.0.1
-- vrf: VRFEXT
+- vrf: VRF-EXT
   prefix: 0.0.0.0/0
   next_hop: 192.168.10.250
 transceiver_qsfp_default_mode_4x10: true
@@ -404,7 +404,7 @@ vlan_interfaces:
   mtu: 1500
   no_autostate: true
 - name: Vlan219
-  description: VRFRDR_VLAN219_REC
+  description: VRF-CAM_VLAN219_REC
   shutdown: false
   vrf: VRF-CAM
   ip_address_virtual: 192.168.219.1/24
@@ -413,7 +413,7 @@ vlan_interfaces:
   - 2001:DB8:D219::1/48
   tenant: ATC-FIDJI
 - name: Vlan220
-  description: VRFRDR_VLAN220_CAM_TOWER
+  description: VRF-CAM_VLAN220_CAM_TOWER
   shutdown: false
   vrf: VRF-CAM
   ip_address_virtual: 192.168.220.1/24
@@ -429,8 +429,43 @@ vlan_interfaces:
   mtu: 1500
   tenant: ATC-FIDJI
   type: underlay_peering
+- name: Vlan10
+  description: VRF-EXT_VLAN11_EXT
+  shutdown: false
+  vrf: VRF-EXT
+  ip_address_virtual: 192.168.10.1/24
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:D10::1/48
+  tenant: ATC-FIDJI
+- name: Vlan11
+  description: VRF-EXT_VLAN11_CLIENT
+  shutdown: false
+  vrf: VRF-EXT
+  ip_address_virtual: 192.168.11.1/24
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:D11::1/48
+  tenant: ATC-FIDJI
+- name: Vlan12
+  description: VRF-EXT_VLAN12_SERVER
+  shutdown: false
+  vrf: VRF-EXT
+  ip_address_virtual: 192.168.12.1/24
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:D12::1/48
+  tenant: ATC-FIDJI
+- name: Vlan3009
+  description: MLAG_L3_VRF_VRF-EXT
+  shutdown: false
+  vrf: VRF-EXT
+  ip_address: 10.255.255.104/31
+  mtu: 1500
+  tenant: ATC-FIDJI
+  type: underlay_peering
 - name: Vlan250
-  description: VRFRDR_VLAN250_RDR
+  description: VRF-RDR_VLAN250_RDR
   shutdown: false
   vrf: VRF-RDR
   ip_address_virtual: 192.168.250.1/24
@@ -442,41 +477,6 @@ vlan_interfaces:
   description: MLAG_L3_VRF_VRF-RDR
   shutdown: false
   vrf: VRF-RDR
-  ip_address: 10.255.255.104/31
-  mtu: 1500
-  tenant: ATC-FIDJI
-  type: underlay_peering
-- name: Vlan10
-  description: VRFEXT_VLAN11_EXT
-  shutdown: false
-  vrf: VRFEXT
-  ip_address_virtual: 192.168.10.1/24
-  ipv6_enable: true
-  ipv6_address_virtuals:
-  - 2001:DB8:D10::1/48
-  tenant: ATC-FIDJI
-- name: Vlan11
-  description: VRFEXT_VLAN11_CLIENT
-  shutdown: false
-  vrf: VRFEXT
-  ip_address_virtual: 192.168.11.1/24
-  ipv6_enable: true
-  ipv6_address_virtuals:
-  - 2001:DB8:D11::1/48
-  tenant: ATC-FIDJI
-- name: Vlan12
-  description: VRF10_VLAN12_SERVER
-  shutdown: false
-  vrf: VRFEXT
-  ip_address_virtual: 192.168.12.1/24
-  ipv6_enable: true
-  ipv6_address_virtuals:
-  - 2001:DB8:D12::1/48
-  tenant: ATC-FIDJI
-- name: Vlan3009
-  description: MLAG_L3_VRF_VRFEXT
-  shutdown: false
-  vrf: VRFEXT
   ip_address: 10.255.255.104/31
   mtu: 1500
   tenant: ATC-FIDJI
@@ -498,35 +498,35 @@ vlans:
   - MLAG
   tenant: system
 - id: 219
-  name: VRFRDR_VLAN219_REC
+  name: VRF-CAM_VLAN219_REC
   tenant: ATC-FIDJI
 - id: 220
-  name: VRFRDR_VLAN220_CAM_TOWER
+  name: VRF-CAM_VLAN220_CAM_TOWER
   tenant: ATC-FIDJI
 - id: 3011
   name: MLAG_L3_VRF_VRF-CAM
   trunk_groups:
   - MLAG
   tenant: ATC-FIDJI
-- id: 250
-  name: VRFRDR_VLAN250_RDR
+- id: 10
+  name: VRF-EXT_VLAN11_EXT
   tenant: ATC-FIDJI
-- id: 3010
-  name: MLAG_L3_VRF_VRF-RDR
+- id: 11
+  name: VRF-EXT_VLAN11_CLIENT
+  tenant: ATC-FIDJI
+- id: 12
+  name: VRF-EXT_VLAN12_SERVER
+  tenant: ATC-FIDJI
+- id: 3009
+  name: MLAG_L3_VRF_VRF-EXT
   trunk_groups:
   - MLAG
   tenant: ATC-FIDJI
-- id: 10
-  name: VRFEXT_VLAN11_EXT
+- id: 250
+  name: VRF-RDR_VLAN250_RDR
   tenant: ATC-FIDJI
-- id: 11
-  name: VRFEXT_VLAN11_CLIENT
-  tenant: ATC-FIDJI
-- id: 12
-  name: VRF10_VLAN12_SERVER
-  tenant: ATC-FIDJI
-- id: 3009
-  name: MLAG_L3_VRF_VRFEXT
+- id: 3010
+  name: MLAG_L3_VRF_VRF-RDR
   trunk_groups:
   - MLAG
   tenant: ATC-FIDJI
@@ -543,11 +543,11 @@ vrfs:
   ip_routing: true
   ipv6_routing: true
   tenant: ATC-FIDJI
-- name: VRF-RDR
+- name: VRF-EXT
   ip_routing: true
   ipv6_routing: true
   tenant: ATC-FIDJI
-- name: VRFEXT
+- name: VRF-RDR
   ip_routing: true
   ipv6_routing: true
   tenant: ATC-FIDJI
@@ -563,14 +563,14 @@ vxlan_interface:
         vni: 10219
       - id: 220
         vni: 10220
-      - id: 250
-        vni: 10250
       - id: 10
         vni: 10010
       - id: 11
         vni: 10011
       - id: 12
         vni: 10012
+      - id: 250
+        vni: 10250
       - id: 3401
         vni: 13401
       - id: 3402
@@ -578,7 +578,7 @@ vxlan_interface:
       vrfs:
       - name: VRF-CAM
         vni: 12
+      - name: VRF-EXT
+        vni: 10
       - name: VRF-RDR
         vni: 11
-      - name: VRFEXT
-        vni: 10

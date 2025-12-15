@@ -126,22 +126,22 @@ vlans:
   - MLAG
   tenant: system
 - id: 219
-  name: VRFRDR_VLAN219_REC
+  name: VRF-CAM_VLAN219_REC
   tenant: ATC-FIDJI
 - id: 220
-  name: VRFRDR_VLAN220_CAM_TOWER
-  tenant: ATC-FIDJI
-- id: 250
-  name: VRFRDR_VLAN250_RDR
+  name: VRF-CAM_VLAN220_CAM_TOWER
   tenant: ATC-FIDJI
 - id: 10
-  name: VRFEXT_VLAN11_EXT
+  name: VRF-EXT_VLAN11_EXT
   tenant: ATC-FIDJI
 - id: 11
-  name: VRFEXT_VLAN11_CLIENT
+  name: VRF-EXT_VLAN11_CLIENT
   tenant: ATC-FIDJI
 - id: 12
-  name: VRF10_VLAN12_SERVER
+  name: VRF-EXT_VLAN12_SERVER
+  tenant: ATC-FIDJI
+- id: 250
+  name: VRF-RDR_VLAN250_RDR
   tenant: ATC-FIDJI
 - id: 3401
   name: CHANNEL-A

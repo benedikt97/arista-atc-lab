@@ -180,12 +180,12 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 10 | VRFEXT_VLAN11_EXT | - |
-| 11 | VRFEXT_VLAN11_CLIENT | - |
-| 12 | VRF10_VLAN12_SERVER | - |
-| 219 | VRFRDR_VLAN219_REC | - |
-| 220 | VRFRDR_VLAN220_CAM_TOWER | - |
-| 250 | VRFRDR_VLAN250_RDR | - |
+| 10 | VRF-EXT_VLAN11_EXT | - |
+| 11 | VRF-EXT_VLAN11_CLIENT | - |
+| 12 | VRF-EXT_VLAN12_SERVER | - |
+| 219 | VRF-CAM_VLAN219_REC | - |
+| 220 | VRF-CAM_VLAN220_CAM_TOWER | - |
+| 250 | VRF-RDR_VLAN250_RDR | - |
 | 3401 | CHANNEL-A | - |
 | 3402 | CHANNEL-B | - |
 | 4094 | MLAG | MLAG |
@@ -195,22 +195,22 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 vlan 10
-   name VRFEXT_VLAN11_EXT
+   name VRF-EXT_VLAN11_EXT
 !
 vlan 11
-   name VRFEXT_VLAN11_CLIENT
+   name VRF-EXT_VLAN11_CLIENT
 !
 vlan 12
-   name VRF10_VLAN12_SERVER
+   name VRF-EXT_VLAN12_SERVER
 !
 vlan 219
-   name VRFRDR_VLAN219_REC
+   name VRF-CAM_VLAN219_REC
 !
 vlan 220
-   name VRFRDR_VLAN220_CAM_TOWER
+   name VRF-CAM_VLAN220_CAM_TOWER
 !
 vlan 250
-   name VRFRDR_VLAN250_RDR
+   name VRF-RDR_VLAN250_RDR
 !
 vlan 3401
    name CHANNEL-A

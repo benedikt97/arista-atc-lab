@@ -189,13 +189,13 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 10 | VRFEXT_VLAN11_EXT | - |
-| 11 | VRFEXT_VLAN11_CLIENT | - |
-| 12 | VRF10_VLAN12_SERVER | - |
-| 219 | VRFRDR_VLAN219_REC | - |
-| 220 | VRFRDR_VLAN220_CAM_TOWER | - |
-| 250 | VRFRDR_VLAN250_RDR | - |
-| 3009 | MLAG_L3_VRF_VRFEXT | MLAG |
+| 10 | VRF-EXT_VLAN11_EXT | - |
+| 11 | VRF-EXT_VLAN11_CLIENT | - |
+| 12 | VRF-EXT_VLAN12_SERVER | - |
+| 219 | VRF-CAM_VLAN219_REC | - |
+| 220 | VRF-CAM_VLAN220_CAM_TOWER | - |
+| 250 | VRF-RDR_VLAN250_RDR | - |
+| 3009 | MLAG_L3_VRF_VRF-EXT | MLAG |
 | 3010 | MLAG_L3_VRF_VRF-RDR | MLAG |
 | 3011 | MLAG_L3_VRF_VRF-CAM | MLAG |
 | 3401 | CHANNEL-A | - |
@@ -208,25 +208,25 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 vlan 10
-   name VRFEXT_VLAN11_EXT
+   name VRF-EXT_VLAN11_EXT
 !
 vlan 11
-   name VRFEXT_VLAN11_CLIENT
+   name VRF-EXT_VLAN11_CLIENT
 !
 vlan 12
-   name VRF10_VLAN12_SERVER
+   name VRF-EXT_VLAN12_SERVER
 !
 vlan 219
-   name VRFRDR_VLAN219_REC
+   name VRF-CAM_VLAN219_REC
 !
 vlan 220
-   name VRFRDR_VLAN220_CAM_TOWER
+   name VRF-CAM_VLAN220_CAM_TOWER
 !
 vlan 250
-   name VRFRDR_VLAN250_RDR
+   name VRF-RDR_VLAN250_RDR
 !
 vlan 3009
-   name MLAG_L3_VRF_VRFEXT
+   name MLAG_L3_VRF_VRF-EXT
    trunk group MLAG
 !
 vlan 3010
@@ -430,13 +430,13 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan10 | VRFEXT_VLAN11_EXT | VRFEXT | - | False |
-| Vlan11 | VRFEXT_VLAN11_CLIENT | VRFEXT | - | False |
-| Vlan12 | VRF10_VLAN12_SERVER | VRFEXT | - | False |
-| Vlan219 | VRFRDR_VLAN219_REC | VRF-CAM | - | False |
-| Vlan220 | VRFRDR_VLAN220_CAM_TOWER | VRF-CAM | - | False |
-| Vlan250 | VRFRDR_VLAN250_RDR | VRF-RDR | - | False |
-| Vlan3009 | MLAG_L3_VRF_VRFEXT | VRFEXT | 1500 | False |
+| Vlan10 | VRF-EXT_VLAN11_EXT | VRF-EXT | - | False |
+| Vlan11 | VRF-EXT_VLAN11_CLIENT | VRF-EXT | - | False |
+| Vlan12 | VRF-EXT_VLAN12_SERVER | VRF-EXT | - | False |
+| Vlan219 | VRF-CAM_VLAN219_REC | VRF-CAM | - | False |
+| Vlan220 | VRF-CAM_VLAN220_CAM_TOWER | VRF-CAM | - | False |
+| Vlan250 | VRF-RDR_VLAN250_RDR | VRF-RDR | - | False |
+| Vlan3009 | MLAG_L3_VRF_VRF-EXT | VRF-EXT | 1500 | False |
 | Vlan3010 | MLAG_L3_VRF_VRF-RDR | VRF-RDR | 1500 | False |
 | Vlan3011 | MLAG_L3_VRF_VRF-CAM | VRF-CAM | 1500 | False |
 | Vlan4093 | MLAG_L3 | default | 1500 | False |
@@ -446,13 +446,13 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan10 |  VRFEXT  |  -  |  192.168.10.1/24  |  -  |  -  |  -  |
-| Vlan11 |  VRFEXT  |  -  |  192.168.11.1/24  |  -  |  -  |  -  |
-| Vlan12 |  VRFEXT  |  -  |  192.168.12.1/24  |  -  |  -  |  -  |
+| Vlan10 |  VRF-EXT  |  -  |  192.168.10.1/24  |  -  |  -  |  -  |
+| Vlan11 |  VRF-EXT  |  -  |  192.168.11.1/24  |  -  |  -  |  -  |
+| Vlan12 |  VRF-EXT  |  -  |  192.168.12.1/24  |  -  |  -  |  -  |
 | Vlan219 |  VRF-CAM  |  -  |  192.168.219.1/24  |  -  |  -  |  -  |
 | Vlan220 |  VRF-CAM  |  -  |  192.168.220.1/24  |  -  |  -  |  -  |
 | Vlan250 |  VRF-RDR  |  -  |  192.168.250.1/24  |  -  |  -  |  -  |
-| Vlan3009 |  VRFEXT  |  10.255.255.100/31  |  -  |  -  |  -  |  -  |
+| Vlan3009 |  VRF-EXT  |  10.255.255.100/31  |  -  |  -  |  -  |  -  |
 | Vlan3010 |  VRF-RDR  |  10.255.255.100/31  |  -  |  -  |  -  |  -  |
 | Vlan3011 |  VRF-CAM  |  10.255.255.100/31  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  10.255.255.100/31  |  -  |  -  |  -  |  -  |
@@ -462,9 +462,9 @@ interface Loopback1
 
 | Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| Vlan10 | VRFEXT | - | 2001:DB8:D10::1/48 | - | - | - | - | - | - |
-| Vlan11 | VRFEXT | - | 2001:DB8:D11::1/48 | - | - | - | - | - | - |
-| Vlan12 | VRFEXT | - | 2001:DB8:D12::1/48 | - | - | - | - | - | - |
+| Vlan10 | VRF-EXT | - | 2001:DB8:D10::1/48 | - | - | - | - | - | - |
+| Vlan11 | VRF-EXT | - | 2001:DB8:D11::1/48 | - | - | - | - | - | - |
+| Vlan12 | VRF-EXT | - | 2001:DB8:D12::1/48 | - | - | - | - | - | - |
 | Vlan219 | VRF-CAM | - | 2001:DB8:D219::1/48 | - | - | - | - | - | - |
 | Vlan220 | VRF-CAM | - | 2001:DB8:D220::1/48 | - | - | - | - | - | - |
 | Vlan250 | VRF-RDR | - | 2001:DB8:D250::1/48 | - | - | - | - | - | - |
@@ -474,31 +474,31 @@ interface Loopback1
 ```eos
 !
 interface Vlan10
-   description VRFEXT_VLAN11_EXT
+   description VRF-EXT_VLAN11_EXT
    no shutdown
-   vrf VRFEXT
+   vrf VRF-EXT
    ipv6 enable
    ip address virtual 192.168.10.1/24
    ipv6 address virtual 2001:DB8:D10::1/48
 !
 interface Vlan11
-   description VRFEXT_VLAN11_CLIENT
+   description VRF-EXT_VLAN11_CLIENT
    no shutdown
-   vrf VRFEXT
+   vrf VRF-EXT
    ipv6 enable
    ip address virtual 192.168.11.1/24
    ipv6 address virtual 2001:DB8:D11::1/48
 !
 interface Vlan12
-   description VRF10_VLAN12_SERVER
+   description VRF-EXT_VLAN12_SERVER
    no shutdown
-   vrf VRFEXT
+   vrf VRF-EXT
    ipv6 enable
    ip address virtual 192.168.12.1/24
    ipv6 address virtual 2001:DB8:D12::1/48
 !
 interface Vlan219
-   description VRFRDR_VLAN219_REC
+   description VRF-CAM_VLAN219_REC
    no shutdown
    vrf VRF-CAM
    ipv6 enable
@@ -506,7 +506,7 @@ interface Vlan219
    ipv6 address virtual 2001:DB8:D219::1/48
 !
 interface Vlan220
-   description VRFRDR_VLAN220_CAM_TOWER
+   description VRF-CAM_VLAN220_CAM_TOWER
    no shutdown
    vrf VRF-CAM
    ipv6 enable
@@ -514,7 +514,7 @@ interface Vlan220
    ipv6 address virtual 2001:DB8:D220::1/48
 !
 interface Vlan250
-   description VRFRDR_VLAN250_RDR
+   description VRF-RDR_VLAN250_RDR
    no shutdown
    vrf VRF-RDR
    ipv6 enable
@@ -522,10 +522,10 @@ interface Vlan250
    ipv6 address virtual 2001:DB8:D250::1/48
 !
 interface Vlan3009
-   description MLAG_L3_VRF_VRFEXT
+   description MLAG_L3_VRF_VRF-EXT
    no shutdown
    mtu 1500
-   vrf VRFEXT
+   vrf VRF-EXT
    ip address 10.255.255.100/31
 !
 interface Vlan3010
@@ -584,8 +584,8 @@ interface Vlan4094
 | VRF | VNI | Overlay Multicast Group to Encap Mappings |
 | --- | --- | ----------------------------------------- |
 | VRF-CAM | 12 | - |
+| VRF-EXT | 10 | - |
 | VRF-RDR | 11 | - |
-| VRFEXT | 10 | - |
 
 #### VXLAN Interface Device Configuration
 
@@ -605,8 +605,8 @@ interface Vxlan1
    vxlan vlan 3401 vni 13401
    vxlan vlan 3402 vni 13402
    vxlan vrf VRF-CAM vni 12
+   vxlan vrf VRF-EXT vni 10
    vxlan vrf VRF-RDR vni 11
-   vxlan vrf VRFEXT vni 10
 ```
 
 ## Routing
@@ -642,8 +642,8 @@ ip virtual-router mac-address 02:1c:73:00:00:99
 | default | True |
 | MGMT | False |
 | VRF-CAM | True |
+| VRF-EXT | True |
 | VRF-RDR | True |
-| VRFEXT | True |
 
 #### IP Routing Device Configuration
 
@@ -652,8 +652,8 @@ ip virtual-router mac-address 02:1c:73:00:00:99
 ip routing
 no ip routing vrf MGMT
 ip routing vrf VRF-CAM
+ip routing vrf VRF-EXT
 ip routing vrf VRF-RDR
-ip routing vrf VRFEXT
 ```
 
 ### IPv6 Routing
@@ -665,8 +665,8 @@ ip routing vrf VRFEXT
 | default | False |
 | MGMT | false |
 | VRF-CAM | true |
+| VRF-EXT | true |
 | VRF-RDR | true |
-| VRFEXT | true |
 
 ### Static Routes
 
@@ -675,14 +675,14 @@ ip routing vrf VRFEXT
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 172.22.0.1 | - | 1 | - | - | - |
-| VRFEXT | 0.0.0.0/0 | 192.168.10.250 | - | 1 | - | - | - |
+| VRF-EXT | 0.0.0.0/0 | 192.168.10.250 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 172.22.0.1
-ip route vrf VRFEXT 0.0.0.0/0 192.168.10.250
+ip route vrf VRF-EXT 0.0.0.0/0 192.168.10.250
 ```
 
 ### Router BGP
@@ -755,8 +755,8 @@ ASN Notation: asplain
 | 10.255.201.10 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.255.101 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 10.255.255.101 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF-CAM | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
+| 10.255.255.101 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF-EXT | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 10.255.255.101 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF-RDR | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
-| 10.255.255.101 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRFEXT | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -793,8 +793,8 @@ ASN Notation: asplain
 | VRF | Route-Distinguisher | Redistribute | Graceful Restart |
 | --- | ------------------- | ------------ | ---------------- |
 | VRF-CAM | 10.255.1.3:12 | connected | - |
+| VRF-EXT | 10.255.1.3:10 | connected<br>static | - |
 | VRF-RDR | 10.255.1.3:11 | connected | - |
-| VRFEXT | 10.255.1.3:10 | connected<br>static | - |
 
 #### Router BGP Device Configuration
 
@@ -928,16 +928,7 @@ router bgp 65103
       neighbor 10.255.255.101 description rz-leaf1-2_Vlan3011
       redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
-   vrf VRF-RDR
-      rd 10.255.1.3:11
-      route-target import evpn 11:11
-      route-target export evpn 11:11
-      router-id 10.255.1.3
-      neighbor 10.255.255.101 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.255.101 description rz-leaf1-2_Vlan3010
-      redistribute connected route-map RM-CONN-2-BGP-VRFS
-   !
-   vrf VRFEXT
+   vrf VRF-EXT
       rd 10.255.1.3:10
       route-target import evpn 10:10
       route-target export evpn 10:10
@@ -946,6 +937,15 @@ router bgp 65103
       neighbor 10.255.255.101 description rz-leaf1-2_Vlan3009
       redistribute connected route-map RM-CONN-2-BGP-VRFS
       redistribute static
+   !
+   vrf VRF-RDR
+      rd 10.255.1.3:11
+      route-target import evpn 11:11
+      route-target export evpn 11:11
+      router-id 10.255.1.3
+      neighbor 10.255.255.101 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.255.101 description rz-leaf1-2_Vlan3010
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
 ```
 
 ## BFD
@@ -1060,8 +1060,8 @@ route-map RM-MLAG-PEER-IN permit 10
 | -------- | ---------- |
 | MGMT | disabled |
 | VRF-CAM | enabled |
+| VRF-EXT | enabled |
 | VRF-RDR | enabled |
-| VRFEXT | enabled |
 
 ### VRF Instances Device Configuration
 
@@ -1071,7 +1071,7 @@ vrf instance MGMT
 !
 vrf instance VRF-CAM
 !
-vrf instance VRF-RDR
+vrf instance VRF-EXT
 !
-vrf instance VRFEXT
+vrf instance VRF-RDR
 ```

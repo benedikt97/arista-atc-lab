@@ -17,7 +17,7 @@ socat_loop &
 {% if hostname == "radar-cam1" %}
 socat_loop () {
     while true; do
-    pv -L 125000 /dev/random | socat -b 1400 -u - UDP:192.168.219.5:9000
+    pv -L 1M /dev/random | socat -b 1000 -u - UDP:192.168.219.5:9000
     done
 }
 socat_loop &
@@ -26,7 +26,7 @@ socat_loop &
 {% if hostname == "tower-cam1" %}
 socat_loop () {
     while true; do
-    pv -L 125000 /dev/random | socat -b 1400 -u - UDP:192.168.219.5:9000
+    pv -L 1M /dev/random | socat -b 1000 -u - UDP:192.168.219.5:9000
     done
 }
 socat_loop &

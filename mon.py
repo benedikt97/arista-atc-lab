@@ -157,9 +157,9 @@ def render(afi: str, printBps: bool):
                             color = "blue"
                         case x if x < 10:
                             color = "green"
-                        case x if x < 500:
+                        case x if x < 2000:
                             color = "orange"
-                        case x if x > 500:
+                        case x if x > 2000:
                             color = "red"
                 except:
                     color = "grey"
