@@ -1,0 +1,10 @@
+---
+- name: Collect commands
+  hosts: FABRIC
+  gather_facts: false
+  collections:
+    - arista.avd
+  tasks:
+    - name: Collect commands
+      ansible.builtin.import_role:
+        name: eos_snapshot
