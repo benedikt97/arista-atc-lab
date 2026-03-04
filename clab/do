@@ -1,6 +1,6 @@
 #!/bin/bash
 cd "$(dirname "$(readlink -f "$0")")"
-
+rm -rf clab-interview-lab
 clab destroy
 set -x
 jinja2 dualhomed.j2 sdf-server1.yaml > startscripts/sdf-server1.sh
@@ -12,5 +12,5 @@ jinja2 dualhomed.j2 radar.yaml > startscripts/radar.sh
 jinja2 default.j2 tower-cam1.yaml > startscripts/tower-cam1.sh
 jinja2 default.j2 tower-df1.yaml > startscripts/tower-df1.sh
 jinja2 default.j2 radar-cam1.yaml > startscripts/radar-cam1.sh
-unset -x
+set +x
 clab deploy

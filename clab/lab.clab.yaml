@@ -4,7 +4,7 @@ prefix: ""
 topology:
   kinds:
     ceos:
-      image: ceos:4.35.0F
+      image: ceos:4.35.2F
       startup-config: ../intended/configs/__clabNodeName__.cfg
       env:
         CLAB_MGMT_VRF: MGMT
@@ -42,7 +42,7 @@ topology:
       mgmt-ipv4: 172.22.0.110
     router1:
       kind: linux
-      image: frrouting/frr:configured
+      image: frr:configured
       exec:
         - bash server.sh 
       binds:
@@ -50,7 +50,7 @@ topology:
         - startscripts/router1.cmd:/router.cmd
     router2:
       kind: linux
-      image: frrouting/frr:configured
+      image: frr:configured
       exec:
         - bash server.sh
       binds:

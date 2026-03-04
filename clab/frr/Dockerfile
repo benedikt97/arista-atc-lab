@@ -1,4 +1,4 @@
-FROM frrouting/frr:latest
+FROM quay.io/frrouting/frr:10.2.5
 
 
 
