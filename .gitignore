@@ -1,2 +1,8 @@
 clab/clab-interview-lab
 .venv
+.colima
+.ssh
+Library
+.bash_history
+.viminfo
+*.tar
