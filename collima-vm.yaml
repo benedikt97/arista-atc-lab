@@ -1,0 +1,30 @@
+vmType: vz
+arch: aarch64
+
+cpus: 14
+memory: 24GiB
+disk: 100GiB
+
+images:
+  - location: "https://mirror.netzwerge.de/fedora/linux/releases/43/Cloud/aarch64/images/Fedora-Cloud-Base-Generic-43-1.6.aarch64.qcow2"
+    arch: "aarch64"
+
+mounts:
+  - location: "~"
+    writable: true
+
+networks:
+  - vzNAT: true
+
+provision:
+  - mode: system
+    script: |
+      dnf -y update
+      dnf -y install dnf-plugins-core
+      dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+      dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+      systemctl enable docker
+      systemctl start docker
+      usermod -aG docker $USER
+
+
