@@ -1,0 +1,16 @@
+#!/bin/bash
+
+docker image ls | grep frr:configured || docker build clab/frr/ -t frr:configured
+docker image ls | grep clab-host || docker build clab/clab-host/ -t clab-host
+docker image ls | grep clabandtools || docker build clab/clabandtools/ -t clabandtools
+docker image ls | grep ceos:4.35.2F || docker import ./cEOSarm-lab-4.35.2F.tar ceos:4.35.2F
+
+
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
+WORKING_DIR=$(realpath "$SCRIPT_DIR"/tools)
+source .venv/bin/activate
+export PATH="$PATH:$WORKING_DIR"
+export HOME="/Users/benedikt/git/arista-atc-lab/"
+echo "Please feal free to use following tools now:" 
+ls $WORKING_DIR
