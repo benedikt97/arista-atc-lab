@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]]; then
+	ip netns
+fi
+
+if [[ $# -eq 1 ]]; then
+	sudo ip netns exec $1 ip -br a
+fi
+
+if [[ $# -eq 2 ]]; then
+	sudo ip netns exec $1 tshark -i $2 --color --hexdump ascii -V
+fi 

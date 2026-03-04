@@ -1,0 +1,13 @@
+#!/bin/bash
+
+docker run --rm -it --privileged \
+    --network host \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /var/run/netns:/var/run/netns \
+    -v /var/lib/containers:/var/lib/containers \
+    -v /etc/hosts:/etc/hosts \
+    --pid="host" \
+    -v $(pwd):$(pwd) \
+    -w $(pwd) \
+    -p 8080:8080 \
+    clabandtools bash
