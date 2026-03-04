@@ -70,7 +70,7 @@ interface Management0
 
 | HTTP | HTTPS | UNIX-Socket | Default Services |
 | ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| True | True | - | - |
 
 #### Management API VRF Access
 
@@ -84,6 +84,7 @@ interface Management0
 !
 management api http-commands
    protocol https
+   protocol http
    no shutdown
    !
    vrf MGMT
@@ -164,7 +165,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -281,7 +282,7 @@ interface Ethernet6
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_CENTER-LEAF2_Port-Channel8 | trunk | 10-12,219-220,250,3401-3402 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_tower-leaf3-2_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel5 | SERVER_tower-position1_Bond0 | trunk | 11,3401-3402 | 11 | - | - | - | 5 | - |
@@ -320,15 +321,15 @@ interface Port-Channel5
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan4094 |  default  |  10.255.255.76/31  |  -  |  -  |  -  |  -  |
+| Vlan4094 | default | 10.255.255.76/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 

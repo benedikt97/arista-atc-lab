@@ -79,7 +79,7 @@ interface Management0
 
 | HTTP | HTTPS | UNIX-Socket | Default Services |
 | ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| True | True | - | - |
 
 #### Management API VRF Access
 
@@ -93,6 +93,7 @@ interface Management0
 !
 management api http-commands
    protocol https
+   protocol http
    no shutdown
    !
    vrf MGMT
@@ -173,7 +174,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -245,8 +246,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_router_eth4 | - | 10.250.230.13/30 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
@@ -283,7 +284,7 @@ interface Ethernet6
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_radar-edge1-1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel6 | SERVER_radar_Bond0 | access | 250 | - | - | - | - | 6 | - |
 
@@ -344,8 +345,8 @@ interface Loopback1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan220 | VRFRDR_VLAN220_CAM_TOWER | VRF-CAM | - | False |
 | Vlan221 | VRFRDR_VLAN250_CAM_RDR | VRF-CAM | - | False |
 | Vlan250 | VRFRDR_VLAN250_RDR | VRF-RDR | - | False |
@@ -358,13 +359,13 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan220 |  VRF-CAM  |  -  |  192.168.220.1/24  |  -  |  -  |  -  |
-| Vlan221 |  VRF-CAM  |  -  |  192.168.221.1/24  |  -  |  -  |  -  |
-| Vlan250 |  VRF-RDR  |  -  |  192.168.250.1/24  |  -  |  -  |  -  |
-| Vlan3010 |  VRF-RDR  |  10.255.255.113/31  |  -  |  -  |  -  |  -  |
-| Vlan3011 |  VRF-CAM  |  10.255.255.113/31  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.255.113/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.255.81/31  |  -  |  -  |  -  |  -  |
+| Vlan220 | VRF-CAM | - | 192.168.220.1/24 | - | - | - |
+| Vlan221 | VRF-CAM | - | 192.168.221.1/24 | - | - | - |
+| Vlan250 | VRF-RDR | - | 192.168.250.1/24 | - | - | - |
+| Vlan3010 | VRF-RDR | 10.255.255.113/31 | - | - | - | - |
+| Vlan3011 | VRF-CAM | 10.255.255.113/31 | - | - | - | - |
+| Vlan4093 | default | 10.255.255.113/31 | - | - | - | - |
+| Vlan4094 | default | 10.255.255.81/31 | - | - | - | - |
 
 ##### IPv6
 
@@ -556,7 +557,7 @@ ASN Notation: asplain
 | ---------- |
 | update wait-install |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -571,24 +572,13 @@ ASN Notation: asplain
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-##### EVPN-OVERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | evpn |
-| Source | Loopback0 |
-| BFD | True |
-| Ebgp multihop | 3 |
-| Send community | all |
-| Maximum routes | 0 (no limit) |
-
 ##### IPv4-UNDERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### MLAG-IPv4-UNDERLAY-PEER
 
@@ -598,7 +588,7 @@ ASN Notation: asplain
 | Remote AS | 65109 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -618,7 +608,6 @@ ASN Notation: asplain
 | Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
 | ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
 | EVPN-OVERLAY-CORE | True | - | - | - | - | default | - |
-| EVPN-OVERLAY-PEERS | True | - | - | - | - | default | - |
 
 ##### EVPN DCI Gateway Summary
 
@@ -651,29 +640,23 @@ router bgp 65109
    router-id 10.255.3.10
    update wait-install
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    neighbor EVPN-OVERLAY-CORE peer group
    neighbor EVPN-OVERLAY-CORE update-source Loopback0
    neighbor EVPN-OVERLAY-CORE bfd
    neighbor EVPN-OVERLAY-CORE ebgp-multihop 15
    neighbor EVPN-OVERLAY-CORE send-community
    neighbor EVPN-OVERLAY-CORE maximum-routes 0
-   neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
-   neighbor EVPN-OVERLAY-PEERS send-community
-   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65109
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER description radar-edge1-1
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
-   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
+   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 256000
    neighbor 10.250.230.14 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.250.230.14 remote-as 65202
    neighbor 10.250.230.14 local-as 65110 no-prepend replace-as
@@ -712,12 +695,10 @@ router bgp 65109
    address-family evpn
       neighbor EVPN-OVERLAY-CORE activate
       neighbor EVPN-OVERLAY-CORE domain remote
-      neighbor EVPN-OVERLAY-PEERS activate
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-CORE activate
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !

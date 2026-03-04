@@ -38,7 +38,7 @@
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
-| ---- | ---- | -------------- | --------- | ----------| -------------- |
+| ---- | ---- | -------------- | --------- | --------- | -------------- |
 | l3leaf | acc-leaf2-1 | Ethernet1 | spine | rz-spine1 | Ethernet3 |
 | l3leaf | acc-leaf2-1 | Ethernet2 | spine | rz-spine2 | Ethernet3 |
 | l3leaf | acc-leaf2-1 | Ethernet3 | mlag_peer | acc-leaf2-2 | Ethernet3 |

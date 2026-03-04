@@ -67,7 +67,7 @@ interface Management0
 
 | HTTP | HTTPS | UNIX-Socket | Default Services |
 | ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| True | True | - | - |
 
 #### Management API VRF Access
 
@@ -81,6 +81,7 @@ interface Management0
 !
 management api http-commands
    protocol https
+   protocol http
    no shutdown
    !
    vrf MGMT
@@ -126,7 +127,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -151,8 +152,8 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_rz-leaf1-1_Ethernet2 | - | 10.255.201.10/31 | default | 1500 | False | - | - |
 | Ethernet2 | P2P_rz-leaf1-2_Ethernet2 | - | 10.255.201.14/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_acc-leaf2-1_Ethernet2 | - | 10.255.202.18/31 | default | 1500 | False | - | - |
@@ -283,7 +284,7 @@ ASN Notation: asplain
 | ---------- |
 | update wait-install |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -305,7 +306,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -336,7 +337,7 @@ router bgp 65102
    router-id 10.255.1.2
    update wait-install
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -346,7 +347,7 @@ router bgp 65102
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 10.255.1.3 peer group EVPN-OVERLAY-PEERS
    neighbor 10.255.1.3 remote-as 65103
    neighbor 10.255.1.3 description rz-leaf1-1_Loopback0

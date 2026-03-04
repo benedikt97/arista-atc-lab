@@ -79,7 +79,7 @@ interface Management0
 
 | HTTP | HTTPS | UNIX-Socket | Default Services |
 | ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| True | True | - | - |
 
 #### Management API VRF Access
 
@@ -93,6 +93,7 @@ interface Management0
 !
 management api http-commands
    protocol https
+   protocol http
    no shutdown
    !
    vrf MGMT
@@ -173,7 +174,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -270,8 +271,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_rz-spine1_Ethernet4 | - | 10.255.202.21/31 | default | 1500 | False | - | - |
 | Ethernet2 | P2P_rz-spine2_Ethernet4 | - | 10.255.202.23/31 | default | 1500 | False | - | - |
 
@@ -316,7 +317,7 @@ interface Ethernet5
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_acc-leaf2-1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel5 | SERVER_center-position1_Bond0 | trunk | 11,3401-3402 | 11 | - | - | - | 5 | - |
 
@@ -379,8 +380,8 @@ interface Loopback1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan10 | VRF-EXT_VLAN11_EXT | VRF-EXT | - | False |
 | Vlan11 | VRF-EXT_VLAN11_CLIENT | VRF-EXT | - | False |
 | Vlan12 | VRF-EXT_VLAN12_SERVER | VRF-EXT | - | False |
@@ -397,17 +398,17 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan10 |  VRF-EXT  |  -  |  192.168.10.1/24  |  -  |  -  |  -  |
-| Vlan11 |  VRF-EXT  |  -  |  192.168.11.1/24  |  -  |  -  |  -  |
-| Vlan12 |  VRF-EXT  |  -  |  192.168.12.1/24  |  -  |  -  |  -  |
-| Vlan219 |  VRF-CAM  |  -  |  192.168.219.1/24  |  -  |  -  |  -  |
-| Vlan220 |  VRF-CAM  |  -  |  192.168.220.1/24  |  -  |  -  |  -  |
-| Vlan250 |  VRF-RDR  |  -  |  192.168.250.1/24  |  -  |  -  |  -  |
-| Vlan3009 |  VRF-EXT  |  10.255.255.105/31  |  -  |  -  |  -  |  -  |
-| Vlan3010 |  VRF-RDR  |  10.255.255.105/31  |  -  |  -  |  -  |  -  |
-| Vlan3011 |  VRF-CAM  |  10.255.255.105/31  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.255.105/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.255.73/31  |  -  |  -  |  -  |  -  |
+| Vlan10 | VRF-EXT | - | 192.168.10.1/24 | - | - | - |
+| Vlan11 | VRF-EXT | - | 192.168.11.1/24 | - | - | - |
+| Vlan12 | VRF-EXT | - | 192.168.12.1/24 | - | - | - |
+| Vlan219 | VRF-CAM | - | 192.168.219.1/24 | - | - | - |
+| Vlan220 | VRF-CAM | - | 192.168.220.1/24 | - | - | - |
+| Vlan250 | VRF-RDR | - | 192.168.250.1/24 | - | - | - |
+| Vlan3009 | VRF-EXT | 10.255.255.105/31 | - | - | - | - |
+| Vlan3010 | VRF-RDR | 10.255.255.105/31 | - | - | - | - |
+| Vlan3011 | VRF-CAM | 10.255.255.105/31 | - | - | - | - |
+| Vlan4093 | default | 10.255.255.105/31 | - | - | - | - |
+| Vlan4094 | default | 10.255.255.73/31 | - | - | - | - |
 
 ##### IPv6
 
@@ -650,7 +651,7 @@ ASN Notation: asplain
 | ---------- |
 | update wait-install |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -671,7 +672,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### MLAG-IPv4-UNDERLAY-PEER
 
@@ -681,7 +682,7 @@ ASN Notation: asplain
 | Remote AS | 65105 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -733,7 +734,7 @@ router bgp 65105
    router-id 10.255.1.6
    update wait-install
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -742,14 +743,14 @@ router bgp 65105
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65105
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER description acc-leaf2-1
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
-   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
+   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 256000
    neighbor 10.255.1.1 peer group EVPN-OVERLAY-PEERS
    neighbor 10.255.1.1 remote-as 65101
    neighbor 10.255.1.1 description rz-spine1_Loopback0

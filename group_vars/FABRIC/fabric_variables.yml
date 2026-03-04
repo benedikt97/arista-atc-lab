@@ -8,6 +8,10 @@ eos_designs_documentation:
   p2p_links_csv: true
 
 
+management_eapi:
+  enabled: true
+  enable_http: true
+
 underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp
 underlay_ipv6: false
